@@ -1,0 +1,4 @@
+azkaban_cli==0.1.1
+gsenha==0.0.4
+jproperties==1.0.1
+glb_azkaban_utils==0.2.1
