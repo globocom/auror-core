@@ -29,8 +29,9 @@ class Job:
         self_extra.update(extra)
         return self.instance(self.name, self.dependencies, self_extra)
 
+    # chamado no _add_items por aqueles que tem type diferente de 'command'
     def before_add_hook(self):
-        pass
+        return self.instance(self.name, self.dependencies, self.extra)
 
     def _write(self, folder):
         name = "{}.job".format(self.name)
@@ -39,12 +40,12 @@ class Job:
             self.properties.store(f, encoding="utf-8", initial_comments=name, timestamp=False)
     
     def _add_items(self):
-        self.before_add_hook()
-        self.properties["type"] = self._type
-        for name, value in self.extra.items():
+        job = self.before_add_hook()
+        self.properties["type"] = job._type
+        for name, value in job.extra.items():
             self.properties[name] = value
         if self.dependencies:
-            self.properties["dependencies"] = ",".join(self.dependencies)
+            self.properties["dependencies"] = ",".join(job.dependencies)
 
 
 class Command(Job):
@@ -109,11 +110,17 @@ class Spark(Command):
     def with_jar_file(self, jar_file):
         return self.with_(**{"jar.file":jar_file})
 
+    def with_extra_jars(self, extra_jars):
+        return self.with_(**{"extra.jars":extra_jars})
+
     def with_java_class(self, java_class):
         return self.with_(**{"java.class":java_class})
 
     def before_add_hook(self):
-        return self.with_command("${spark.submit}")
+        if "extra.jars" in self.extra:
+            return self.with_command("${spark.submit.extra.jars}")
+        else:
+            return self.with_command("${spark.submit}")
 
 
 class Python(Command):
