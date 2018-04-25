@@ -56,7 +56,7 @@ Projeto criado em python para facilitar a criação de jobs do AirFlow para o Az
 #### Como usar
 1. Primeiro, é preciso instalar o _pacote Auror_ que será utilizado no projeto: `pip install auror`.
 2. Em seu script python, importa a **biblioteca auror** para utilizar as classes necessárias para criação do seu job.
-3. Ao executar o script python, será criado os arquivos .job, .properties, .py, por exemplo, dentro do path do diretório definido. \
+3. Ao executar o script python, será criado os arquivos .job, .properties, .py, por exemplo, dentro do path do diretório definido.
 	**Obs.**: Esse diretório já precisa ser criado antes de executar o script python, pois os arquivos serão criados nesse path.
 4. Será preciso compactar (.zip) essa pasta com todos os arquivos que serão usados pelo projeto.
 5. Em seguida, faça o _upload_ desse arquivo compactado no Azkaban.
