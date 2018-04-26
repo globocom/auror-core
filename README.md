@@ -51,15 +51,26 @@ Projeto criado em python para facilitar a criação de jobs do AirFlow para o Az
 #### Observações:
 
 * É preciso chamar no job a variável de __spark-submit__. Caso nele seja definido o parâmetro **extra.jars**, utilize a variável **${spark.submit.extra.jars}**. Caso contrário, utilize **${spark.submit}**. 
-* Os parâmetros declarados em seu projeto Job (scala) podem ser passados no seu job em forma de argumento (em Params, basta adicionar o parâmetro `args`) ou de variável de ambiente.
+* Os parâmetros declarados em seu projeto Job (scala) podem ser passados no seu job em forma de argumento (basta usar a função `with_args` no tipo Spark) ou de variável de ambiente.
 
 #### Como usar
-1. Primeiro, é preciso instalar o _pacote Auror_ que será utilizado no projeto: `pip install auror`.
-2. Em seu script python, importa a **biblioteca auror** para utilizar as classes necessárias para criação do seu job.
-3. Ao executar o script python, será criado os arquivos .job, .properties, .py, por exemplo, dentro do path do diretório definido.
-	**Obs.**: Esse diretório já precisa ser criado antes de executar o script python, pois os arquivos serão criados nesse path.
-4. Será preciso compactar (.zip) essa pasta com todos os arquivos que serão usados pelo projeto.
+1. Primeiro, é preciso instalar o _pacote auror_ que será utilizado no projeto:
+
+    $ pip install auror --index-url=https://artifactory.globoi.com/artifactory/api/pypi/pypi-all/simple
+
+2. Em seu script python, importe a **biblioteca auror** para utilizar as classes necessárias para criação do seu job.
+3. Ao executar o script python, será criado os arquivos .job, .properties, .py, por exemplo, dentro do path do diretório definido: `$ python {creation_job}.py`.
+
+    **Obs.**: Esse diretório já precisa ser criado antes de executar o script python, pois os arquivos serão criados nesse path.
+
+4. Será preciso compactar (.zip) essa pasta com todos os arquivos que serão usados pelo projeto, sejam eles .job, .properties, .py, entre outros.
 5. Em seguida, faça o _upload_ desse arquivo compactado no Azkaban.
+
+#### Release
+
+Última versão está no arquivo version.txt
+
+    $ make release VERSION=0.0.0   # sua versão no lugar de 0.0.0
 
 #### Exemplo de criação do job com variáveis de ambiente
 
@@ -121,7 +132,6 @@ from auror.params import Params
 
 params = Params(
     "params",
-    args="{arg-1 arg-2}"
     retries="{retries-value}",
     **{
         "retry.backoff": "{retry-backoff-value}",
@@ -139,6 +149,7 @@ default_job = Job() \
     .with_name("{name-job-to-azkaban}") \
     .with_java_class("{java_class}") \
     .with_extra_jars("{extra_jars}") \
+    .with_args("arg-1 arg-2") \
     ( .... )
 
 Project("{job-folder-name}",
