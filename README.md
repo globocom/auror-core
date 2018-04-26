@@ -56,7 +56,7 @@ Projeto criado em python para facilitar a criação de jobs do AirFlow para o Az
 #### Como usar
 1. Primeiro, é preciso instalar o _pacote auror_ que será utilizado no projeto:
 
-    $ pip install auror --index-url=https://artifactory.globoi.com/artifactory/api/pypi/pypi-all/simple
+    `$ pip install auror --index-url=https://artifactory.globoi.com/artifactory/api/pypi/pypi-all/simple`
 
 2. Em seu script python, importe a **biblioteca auror** para utilizar as classes necessárias para criação do seu job.
 3. Ao executar o script python, será criado os arquivos .job, .properties, .py, por exemplo, dentro do path do diretório definido: `$ python {creation_job}.py`.
