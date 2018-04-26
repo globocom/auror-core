@@ -115,6 +115,9 @@ class Spark(Command):
     def with_java_class(self, java_class):
         return self.with_(**{"java.class":java_class})
 
+    def with_args(self, some_args):
+        return self.with_(**{"args":some_args})
+
     def before_add_hook(self):
         if "extra.jars" in self.extra:
             return self.with_command("${spark.submit.extra.jars}")
