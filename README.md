@@ -3,7 +3,7 @@ Repositório de criação de Jobs para o Azkaban
 
 Projeto criado em python para facilitar a criação de jobs do AirFlow para o Azkaban.
 
-**Guia do Usuário:** [user-guide](http://docs-bigdata.cloud.globoi.com/cluster/azkaban/user-guide/) \
+**Guia do Usuário:** [user-guide](http://docs-bigdata.cloud.globoi.com/cluster/azkaban/user-guide/)
 **Parâmetros Globais:** [global](http://docs-bigdata.cloud.globoi.com/cluster/azkaban/global/)
 
 #### GLOSSÁRIO
