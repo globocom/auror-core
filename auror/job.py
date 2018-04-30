@@ -97,6 +97,9 @@ class Spark(Command):
     def with_executor_cores(self, executor_cores="1"):
         return self.with_(**{"executor.cores":executor_cores})
 
+    def with_dynamic_allocation(self, enabled=False):
+        return self.with_(**{"conf.spark.dynamicAllocation.enabled": enabled})
+        
     def with_num_executors(self, num_executors="1"):
         return self.with_(**{"num.executors":num_executors})
 
