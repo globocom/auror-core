@@ -97,17 +97,13 @@ class Spark(Command):
     def with_executor_cores(self, executor_cores="1"):
         return self.with_(**{"executor.cores":executor_cores})
 
-    def with_dynamic_allocation(self, enabled=False):
-        return self.with_(**{"conf.spark.dynamicAllocation.enabled": enabled})
+    def with_dynamic_allocation(self, min_executors="1", max_executors="1"):
+        set_configs = {"conf.spark.dynamicAllocation.enabled": "true", \
+                       "min.executors": min_executors, "max.executors": max_executors}
+        return self.with_(**set_configs)
         
     def with_num_executors(self, num_executors="1"):
         return self.with_(**{"num.executors":num_executors})
-
-    def with_min_executors(self, min_executors="1"):
-        return self.with_(**{"min.executors":min_executors})
-
-    def with_max_executors(self, max_executors="1"):
-        return self.with_(**{"max.executors":max_executors})
 
     def with_jar_file(self, jar_file):
         return self.with_(**{"jar.file":jar_file})
