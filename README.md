@@ -52,6 +52,8 @@ Projeto criado em python para facilitar a criação de jobs do AirFlow para o Az
 
 * É preciso chamar no job a variável de __spark-submit__. Caso nele seja definido o parâmetro **extra.jars**, utilize a variável **${spark.submit.extra.jars}**. Caso contrário, utilize **${spark.submit}**. 
 * Os parâmetros declarados em seu projeto Job (scala) podem ser passados no seu job em forma de argumento (basta usar a função `with_args` no tipo Spark) ou de variável de ambiente.
+* Caso queira que a configuração spark `dynamicAllocation` seja habilitada, basta usar a função `with_dynamic_allocation` passando como parâmetros os valores desejados para __min_executors__ e __max_executors__. Os parâmetros `conf.spark.dynamicAllocation.enabled`, `min_executors` e `max_executors` serão criados.
+* Caso queira definir o número de executores, basta usar a função `with_num_executors` passando o valor desejado. Porém, se apenas esta função for definida, sem estabelecer a alocação dinâmica (caso acima), o parâmetro `conf.spark.dynamicAllocation.enabled` terá como valor padrão **False**.
 
 #### Como usar
 1. Primeiro, é preciso instalar o _pacote auror_ que será utilizado no projeto:
@@ -99,12 +101,17 @@ driver_envs = SparkDriver(
 
 default_job = Job() \
     .as_type(Spark) \
+    .with_name("{name-job-to-azkaban}") \
     .with_hadoop_user("{username}") \
     .with_spark_version("{spark-version}") \
     .with_queue() \
-    .with_name("{name-job-to-azkaban}") \
-    .with_java_class("{java_class}") \
-    ( .... )
+    .with_driver_memory("{driver-memory}") \
+    .with_executor_memory("{executor-memory}") \
+    .with_executor_cores("{executor-cores}") \
+    .with_dynamic_allocation("{min-executors}", "{max-executors}") \
+    .with_jar_file("{jar-file}") \
+    .with_java_class("{java-class}") \
+    .with_extra_jars("{extra-jars}")
 
 Project("{job-folder-name}",
   default_job
