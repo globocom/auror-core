@@ -57,7 +57,7 @@ class Command(Job):
         return self.with_(command=command)
 
     def with_another_command(self, command):
-        if not self.get("command"):
+        if not self.extra.get("command"):
             return self.with_command(command)
 
         counter = 1
@@ -76,8 +76,6 @@ class Spark(Command):
             .with_executor_memory()\
             .with_executor_cores()\
             .with_num_executors()\
-            .with_min_executors()\
-            .with_max_executors()
 
     def with_hadoop_user(self, hadoop_user="hadoop"):
         return self.with_(**{"env.HADOOP_USER_NAME":hadoop_user})

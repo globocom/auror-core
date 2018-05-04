@@ -8,6 +8,10 @@ clean:
 	-@rm -rf $(ROOT_PATH)/build
 
 release: clean
+
+test:
+	@python -m unittest discover
+
 ifndef VERSION
 	@echo "need VERSION=xxx"
 else
