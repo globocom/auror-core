@@ -41,6 +41,7 @@ class SparkDriver(Params):
 
 
 class ParamsJoin:
+
     def __init__(self, param_name="custom.envs", separator=" "):
         self.param_name = param_name
         self.separator = separator

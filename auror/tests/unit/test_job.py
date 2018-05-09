@@ -4,6 +4,42 @@
 from unittest import TestCase
 from auror.job import Job, Command, Spark, Python
 
+
+class JobTest(TestCase):
+
+	def setUp(self):
+		self.data_job = Job("name_teste_job", "dependencies_teste_job", "extra_teste_job")
+
+	def test_get_instances(self):
+		instances_job = self.data_job.instance("name_teste_job", "dependencies_teste_job", "extra_teste_job")
+
+		self.assertEqual(instances_job.name, "name_teste_job")
+		self.assertEqual(instances_job.dependencies, "dependencies_teste_job")
+		self.assertEqual(instances_job.extra, "extra_teste_job")
+
+	def test_as_type(self):
+		expected = "python"
+		content = self.data_job.as_type(Python)
+		actual = content._type
+
+		self.assertEqual(expected, actual)
+
+	def test_with_name(self):
+		expected = "teste_name"
+		content = self.data_job.with_name("teste_name")
+		actual = content.name
+
+		self.assertEqual(expected, actual)
+
+	def test_with_dependencies(self):
+		job_1 = self.data_job.with_name("teste_name")
+		job_2 = self.data_job.with_dependencies(job_1)
+		expected = ["teste_name"]
+		actual = job_2.dependencies
+
+		self.assertEqual(expected, actual)
+
+
 class CommandJobTest(TestCase):
 
 	def test_with_all_default(self): #
