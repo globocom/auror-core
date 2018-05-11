@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from os import path
+import shutil, tempfile
 from unittest import TestCase
 from auror.job import Job, Command, Spark, Python
 
@@ -8,8 +10,12 @@ from auror.job import Job, Command, Spark, Python
 class JobTest(TestCase):
 
 	def setUp(self):
+		self.test_dir = tempfile.mkdtemp() # Create a temporary directory
 		self.data_job = Job("test_job_name", ["other_job_name"],
 							{"executor.cores": "2", "driver.memory": "6g"})
+
+	def tearDown(self):
+		shutil.rmtree(self.test_dir, ignore_errors=True) # Remove the directory after the test
 
 	def test_get_instances(self):
 		instance_job = self.data_job.instance("test_job_name_x", ["other_job_name_x"], {"executor.cores": "2"})
@@ -45,6 +51,16 @@ class JobTest(TestCase):
 		actual = content.extra
 
 		self.assertEqual(expected, actual)
+
+	def test_write_in_folder(self):
+		name = "{}.job".format(self.data_job.name)
+		content = self.data_job.as_type(Python)
+		content._add_items()
+		content._write(self.test_dir)
+		f = open(path.join(self.test_dir, name))
+		expected = "#test_job_name.job\ndependencies=other_job_name\ndriver.memory=6g\nexecutor.cores=2\ntype=python\n"
+
+		self.assertEqual(f.read(), expected)
 
 	def test_add_items_and_it_contains_one_dependency(self):
 		content = self.data_job.as_type(Python)
