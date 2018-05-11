@@ -8,14 +8,13 @@ from auror.job import Job, Command, Spark, Python
 class JobTest(TestCase):
 
 	def setUp(self):
-		self.data_job = Job("name_teste_job", "dependencies_teste_job", "extra_teste_job")
+		self.data_job = Job("test_job_name", ["other_job_name"],
+							{"executor.cores": "2", "driver.memory": "6g"})
 
 	def test_get_instances(self):
-		instances_job = self.data_job.instance("name_teste_job", "dependencies_teste_job", "extra_teste_job")
+		instance_job = self.data_job.instance("test_job_name_x", ["other_job_name_x"], {"executor.cores": "2"})
 
-		self.assertEqual(instances_job.name, "name_teste_job")
-		self.assertEqual(instances_job.dependencies, "dependencies_teste_job")
-		self.assertEqual(instances_job.extra, "extra_teste_job")
+		self.assertIsInstance(instance_job, Job)
 
 	def test_as_type(self):
 		expected = "python"
@@ -25,29 +24,64 @@ class JobTest(TestCase):
 		self.assertEqual(expected, actual)
 
 	def test_with_name(self):
-		expected = "teste_name"
-		content = self.data_job.with_name("teste_name")
+		expected = "test_job_name_x"
+		content = self.data_job.with_name("test_job_name_x")
 		actual = content.name
 
 		self.assertEqual(expected, actual)
 
 	def test_with_dependencies(self):
-		job_1 = self.data_job.with_name("teste_name")
-		job_2 = self.data_job.with_dependencies(job_1)
-		expected = ["teste_name"]
-		actual = job_2.dependencies
+		data_job = Job("test_job_name_2", ["test_job_name_2"], {"driver.memory": "5g"})
+		content = self.data_job.with_dependencies(data_job)
+		expected = ["test_job_name_2"]
+		actual = content.dependencies
 
 		self.assertEqual(expected, actual)
+
+	def test_with_method(self):
+		extra = {"env.HADOOP_USER_NAME": "hadoop", "spark.version": "1.0.0"}
+		content = self.data_job.with_(**extra)
+		expected = {"executor.cores": "2", "driver.memory": "6g", "env.HADOOP_USER_NAME": "hadoop", "spark.version": "1.0.0"}
+		actual = content.extra
+
+		self.assertEqual(expected, actual)
+
+	def test_add_items_and_it_contains_one_dependency(self):
+		content = self.data_job.as_type(Python)
+		content._add_items()
+
+		self.assertEqual("other_job_name", content.properties["dependencies"][0])
+		self.assertEqual("python", content.properties["type"][0])
+		self.assertEqual("2", content.properties["executor.cores"][0])
+		self.assertEqual("6g", content.properties["driver.memory"][0])
+
+	def test_add_items_and_it_contains_two_dependencies(self):
+		data_job = Job("test_job_name", [], {})
+		data_job_2 = Job("test_job_name_2", [], {})
+		content = self.data_job.with_dependencies(data_job, data_job_2).as_type(Spark)
+		content._add_items()
+
+		self.assertEqual("test_job_name,test_job_name_2", content.properties["dependencies"][0])
+		self.assertEqual("command", content.properties["type"][0])
+		self.assertEqual("2", content.properties["executor.cores"][0])
+		self.assertEqual("6g", content.properties["driver.memory"][0])
+
+	def test_add_items_and_it_does_not_contain_dependencies(self):
+		data_job_x = Job("name_teste_job_4", [], {"spark.version": "1.0.1"})
+		content = data_job_x.as_type(Python)
+		content._add_items()
+
+		self.assertEqual([], content.dependencies)
+		self.assertEqual("python", content.properties["type"][0])
 
 
 class CommandJobTest(TestCase):
 
-	def test_with_all_default(self): #
-		result = Command().with_all_default()
-		actual = result.extra
-		expected = {}
+	def test_with_all_default(self):
+		expected = Job("test_job_name", ["other_job_name"],
+							{"executor.cores": "2", "driver.memory": "6g"})
 
-		self.assertEqual(expected, actual)
+		self.assertIsInstance(expected, Job)
 
 	def test_with_command(self):
 		command = "${python} -c 'from teste import teste_command_spark; teste_command_spark()'"
