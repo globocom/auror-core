@@ -25,9 +25,9 @@ Projeto criado em python para facilitar a criação de jobs do AirFlow para o Az
 * **Params**
 	- Permite adicionar parâmetros que podem ser definidos, herdados e sobrescritos, sendo criadas em outro arquivo `.properties`. Além dos parâmetros `type` e `dependencies`, existem outros parâmetros que o Azkaban reserva para todos os jobs.
 * **ParamsJoin**
-	- Permite adicionar outros parâmetros a partir de variáveis de ambientes, usando um separador para cada variável, sendo criadas em outro arquivo `.properties`.
+	- Permite adicionar em uma linha todos os parâmetros desejados (variáveis de ambiente, por exemplo) usando um separador para cada configuração de um parâmetro, sendo criadas em outro arquivo `.properties`.
 * **properties**
-	- O job do Azkaban é especificado com um conjunto de pares de valores-chave chamado de **properties**, que farão parte da execução do job. 
+	- O job do Azkaban é especificado com um conjunto de pares de valores-chave chamado de **properties**, que farão parte da execução do job.
 	- Os parâmetros de propriedades do job não precisam, necessariamente, ser definidos dentro do arquivo `.job` que está usando ele, podendo estar em um arquivo `.properties`, por exemplo. Este arquivo também deve estar no projeto e em nível de diretório igual ou mais alto.
 * **args**
 	- Parâmetro que permite passar os argumentos que são declarados no seu projeto Job (scala).
