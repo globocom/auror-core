@@ -9,9 +9,6 @@ clean:
 
 release: clean
 
-test:
-	@python -m unittest discover
-
 ifndef VERSION
 	@echo "need VERSION=xxx"
 else
@@ -23,3 +20,6 @@ else
 	@python setup.py sdist upload -r pypi-local
 	@python setup.py sdist upload -r ipypi-local
 endif
+
+test:
+	@python -m unittest discover
