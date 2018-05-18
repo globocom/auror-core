@@ -129,6 +129,12 @@ class CommandJobTest(TestCase):
         self.assertEqual('command', result._type)
         self.assertEqual(expected, actual)
 
+    def test_with_conditional_command(self):
+        command = Command()
+        actual = command.is_conditional()
+        self.assertEqual('conditionalCommand', actual._type)
+        self.assertEqual({'execute.next': 'true'}, actual.extra)
+
 
 class SparkJobTest(TestCase):
 
@@ -256,6 +262,12 @@ class SparkJobTest(TestCase):
         self.assertEqual('command', result._type)
         self.assertEqual(expected, actual)
 
+    def test_with_conditional_command(self):
+        command = Spark()
+        actual = command.is_conditional()
+        self.assertEqual('conditionalCommand', actual._type)
+        self.assertEqual({'execute.next': 'true'}, actual.extra)        
+
 
 class PythonJobTest(TestCase):
 
@@ -290,4 +302,10 @@ class PythonJobTest(TestCase):
 
         self.assertEqual('python', result._type)
         self.assertEqual(expected, actual)
+
+    def test_with_conditional_command(self):
+        command = Python()
+        actual = command.is_conditional()
+        self.assertEqual('conditionalCommand', actual._type)
+        self.assertEqual({'execute.next': 'true'}, actual.extra)        
 
