@@ -65,11 +65,6 @@ class Command(Job):
             counter += 1
         return self.with_(**{"command.{}".format(counter): command})
 
-    def is_conditional(self):        
-        new_command = self.with_(**{"execute.next" : "true"})
-        new_command._type = "conditionalCommand"
-        return new_command
-
 
 class Spark(Command):
 

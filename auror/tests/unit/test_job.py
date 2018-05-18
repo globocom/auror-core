@@ -129,12 +129,6 @@ class CommandJobTest(TestCase):
         self.assertEqual('command', result._type)
         self.assertEqual(expected, actual)
 
-    def test_with_conditional_command(self):
-        command = Command()
-        actual = command.is_conditional()
-        self.assertEqual('conditionalCommand', actual._type)
-        self.assertEqual({'execute.next': 'true'}, actual.extra)
-
 
 class SparkJobTest(TestCase):
 
@@ -260,13 +254,7 @@ class SparkJobTest(TestCase):
         expected = {'command': '${spark.submit.extra.jars}', 'extra.jars': 'hdfs\\:///spark/teste-jar-1-1.0.0.jar,hdfs\\:///spark/teste-jar-2-1.0.0.jar'}
 
         self.assertEqual('command', result._type)
-        self.assertEqual(expected, actual)
-
-    def test_with_conditional_command(self):
-        command = Spark()
-        actual = command.is_conditional()
-        self.assertEqual('conditionalCommand', actual._type)
-        self.assertEqual({'execute.next': 'true'}, actual.extra)        
+        self.assertEqual(expected, actual)     
 
 
 class PythonJobTest(TestCase):
@@ -301,11 +289,5 @@ class PythonJobTest(TestCase):
         expected = {'virtualenv.requirements': './teste.txt'}
 
         self.assertEqual('python', result._type)
-        self.assertEqual(expected, actual)
-
-    def test_with_conditional_command(self):
-        command = Python()
-        actual = command.is_conditional()
-        self.assertEqual('conditionalCommand', actual._type)
-        self.assertEqual({'execute.next': 'true'}, actual.extra)        
+        self.assertEqual(expected, actual)  
 
