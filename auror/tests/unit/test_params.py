@@ -4,7 +4,7 @@
 from os import path
 import shutil, tempfile
 from unittest import TestCase
-from auror.params import Params, Env, SparkExecutor, SparkDriver, ParamsJoin
+from auror.params import Params, Env, SparkExecutor, SparkDriver, ParamsJoin, SparkConfig
 
 
 class ParamsTest(TestCase):
@@ -64,6 +64,15 @@ class SparkDriverParamsTest(TestCase):
         result_actual = SparkDriver(TESTE_HADOOP_NAME="hadoop", TESTE_SPARK_MASTER="yarn")._get_items()
         expected = [("TESTE_SPARK_MASTER", "--conf spark.yarn.appMasterEnv.TESTE_SPARK_MASTER=yarn"),
                     ("TESTE_HADOOP_NAME", "--conf spark.yarn.appMasterEnv.TESTE_HADOOP_NAME=hadoop")]
+
+        self.assertEqual(expected, result_actual)
+
+class SparkConfigParamsTest(TestCase):
+
+    def test_get_spark_driver_params(self):
+        result_actual = SparkConfig(TESTE_HADOOP_NAME="hadoop", TESTE_SPARK_MASTER="yarn")._get_items()
+        expected = [("TESTE_SPARK_MASTER", "--conf TESTE_SPARK_MASTER=yarn"),
+                    ("TESTE_HADOOP_NAME", "--conf TESTE_HADOOP_NAME=hadoop")]
 
         self.assertEqual(expected, result_actual)
 

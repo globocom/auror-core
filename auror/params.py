@@ -1,7 +1,7 @@
 import os
 from jproperties import Properties
 
-class Params:
+class Params(object):
 
     def __init__(self, name="params", **key_vals):
         self.name = name
@@ -27,17 +27,22 @@ class Env(Params):
     def _get_items(self):
         return [("env.{}".format(name), value) for name, value in self.key_vals.items()]
 
+class SparkConfig(Params):
+    
+    def _get_items(self, prepend=""):
+        return [(name, "--conf {}{}={}".format(prepend, name, value)) for name, value in self.key_vals.items()]
 
-class SparkExecutor(Params):
-
-    def _get_items(self):
-        return [(name, "--conf spark.executorEnv.{}={}".format(name, value)) for name, value in self.key_vals.items()]
-
-
-class SparkDriver(Params):
+class SparkExecutor(SparkConfig):
 
     def _get_items(self):
-        return [(name, "--conf spark.yarn.appMasterEnv.{}={}".format(name, value)) for name, value in self.key_vals.items()]
+
+        return super(SparkExecutor, self)._get_items("spark.executorEnv.")
+
+class SparkDriver(SparkConfig):
+
+    def _get_items(self):
+
+        return super(SparkDriver, self)._get_items("spark.yarn.appMasterEnv.")
 
 
 class ParamsJoin:

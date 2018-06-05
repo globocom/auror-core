@@ -1,7 +1,7 @@
 import copy
 from jproperties import Properties
 
-class Project:
+class Project(object):
 
     def __init__(self, folder, *jobtypes):
         self.jobtypes = jobtypes

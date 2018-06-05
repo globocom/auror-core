@@ -2,7 +2,7 @@ import os
 import copy
 from jproperties import Properties
 
-class Job:
+class Job(object):
 
     def __init__(self, name="DefaultJob", dependencies=None, extra=None):
         self.name = name
