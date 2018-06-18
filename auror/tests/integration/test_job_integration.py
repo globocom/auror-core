@@ -5,7 +5,7 @@ import os
 import shutil, tempfile
 from unittest import TestCase
 from auror import Project
-from auror.job import Job, Command, Spark, Python
+from auror.job import Job, Command, Spark, Python, Email
 from auror.params import Params, SparkDriver, ParamsJoin
 
 params = Params(
@@ -46,6 +46,14 @@ job3_spark = Job() \
     .with_extra_jars("hdfs:///spark/mysql-connector-java-6.0.6.jar") \
     .with_command("echo 'Hello '") \
     .with_another_command("echo 'World!'")
+
+job4_email = Job() \
+    .as_type(Email) \
+    .with_name("job4_email") \
+    .with_subject("Exemplo de email") \
+    .with_message("Esse é o conteúdo do email") \
+    .with_to_recipient("exemplo@corp.globo.com") \
+    .with_dependencies(job3_spark)
 
 
 class TestCaseWithNecessaryConditions(TestCase):
@@ -146,6 +154,26 @@ class JobTypePythonTest(TestCaseWithNecessaryConditions):
         self.assertEqual(expected, f.read())
 
 
+class JobTypeEmailTest(TestCaseWithNecessaryConditions):
+
+    def test_check_if_directory_created_has_job4_email_file_only(self):
+        project = Project(self.test_dir, job4_email)
+        project.with_params().write()
+
+        tmp_dir = self.list_files()
+
+        self.assertEqual(1, len(tmp_dir))
+        self.assertTrue("job4_email.job" in tmp_dir)
+
+    def test_check_the_content_written_in_job4(self):
+        project = Project(self.test_dir, job4_email)
+        project.with_params().write()
+
+        f = self.open_file("job4_email.job")
+        expected = "#job4_email.job\ndependencies=job3_spark\nmail.message=Esse é o conteúdo do email\nmail.subject=Exemplo de email\nmail.to=exemplo@corp.globo.com\ntype=email\n"
+        self.assertEqual(expected, f.read())
+
+
 class JobTypeSparkTest(TestCaseWithNecessaryConditions):
 
     def test_check_if_directory_created_has_jobs_spark_file_only(self):
@@ -173,16 +201,17 @@ class JobTypeSparkTest(TestCaseWithNecessaryConditions):
 class CompleteJobCreationTest(TestCaseWithNecessaryConditions):
 
     def test_check_if_all_files_were_created_including_parameters_files(self):
-        project = Project(self.test_dir, job1_command, job2_python, job3_spark)
+        project = Project(self.test_dir, job1_command, job2_python, job3_spark, job4_email)
         project.with_params(ParamsJoin()(driver_envs), params).write()
 
         tmp_dir = self.list_files()
 
-        self.assertEqual(5, len(tmp_dir))
+        self.assertEqual(6, len(tmp_dir))
         self.assertEqual(project.folder, self.test_dir)
         self.assertTrue("job1_command.job" in tmp_dir)
         self.assertTrue("job2_python.job" in tmp_dir)
         self.assertTrue("job3_spark.job" in tmp_dir)
+        self.assertTrue("job4_email.job" in tmp_dir)
         self.assertTrue("params.properties" in tmp_dir)
         self.assertTrue("some_envs.properties" in tmp_dir)
 
@@ -202,3 +231,10 @@ class CompleteJobCreationTest(TestCaseWithNecessaryConditions):
 
         self.assertTrue("dependencies=job2_python" in f.read())
 
+    def test_check_if_job4_dependency_is_job3(self):
+        project = Project(self.test_dir, job1_command, job2_python, job3_spark, job4_email)
+        project.with_params(ParamsJoin()(driver_envs), params).write()
+
+        f = self.open_file("job4_email.job")
+
+        self.assertTrue("dependencies=job3_spark" in f.read())

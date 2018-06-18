@@ -18,6 +18,8 @@ Projeto criado em python para facilitar a criação de jobs do AirFlow para o Az
 	- Parâmetro de tipo de job mais comum, que permite executar uma linha de comando. Ela pode definir comandos subsequentes adicionando o sufixo .1, .2, etc.
 * **python**
 	- Outro tipo de job que permite a instalação e uso de pacotes python em um projeto. Para utilizá-lo, basta passar, através de parâmetros, o nome da virtualenv, o arquivo de requirements e o python desejado.
+* **email**
+    - É um tipo de job que permite o envio de emails de forma simples e configurável. Pode ser definido o assunto do email, o corpo do email e os destinatários. O uso do parâmetro `send` igual a **false** permite que o email não seja enviado ao destinatário.
 * **name**
 	- A ser definido como nome do job.
 * **dependencies**
