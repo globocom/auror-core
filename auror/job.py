@@ -139,7 +139,7 @@ class Python(Command):
         return self.with_(**{"virtualenv.requirements":requirements})
 
 
-class Email(Command):
+class Email(Job):
     _type = "email"
 
     def with_subject(self, mail_subject):
