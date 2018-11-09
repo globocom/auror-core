@@ -4,7 +4,7 @@
 from os import path
 import shutil, tempfile
 from unittest import TestCase
-from auror.params import Params, Env, SparkExecutor, SparkDriver, ParamsJoin, SparkConfig
+from auror.v1.params import Params, Env, SparkExecutor, SparkDriver, ParamsJoin, SparkConfig
 
 
 class ParamsTest(TestCase):

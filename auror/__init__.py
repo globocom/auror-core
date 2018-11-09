@@ -21,10 +21,15 @@ class Project(object):
         return copy.deepcopy(self)
 
     def write(self):
-        for jobtype in self.jobtypes:
-            jobtype._add_items()
-            jobtype._write(self.folder)
 
         for param in self.params:
             param._add_items()
             param._write(self.folder)
+
+        for jobtype in self.jobtypes:
+            jobtype._add_items()
+            jobtype._write(self.folder)
+        
+        if self.version == 2:
+            with open('flow20.project', 'w') as project:
+                project.write('azkaban-flow-version: 2.0')

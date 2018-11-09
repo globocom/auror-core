@@ -4,21 +4,21 @@
 from os import path
 import shutil, tempfile
 from unittest import TestCase
-from auror.job import Job, Command, Spark, Python, Email
+from auror.v2.job import Job, Command, Spark, Python, Email
 
 
 class JobTest(TestCase):
 
     def setUp(self):
         self.test_dir = tempfile.mkdtemp() # Create a temporary directory
-        self.data_job = Job("test_job_name", ["other_job_name"],
+        self.data_job = Job("test_job_name", None, ["other_job_name"], None,
                            {"executor.cores": "2", "driver.memory": "6g"})
 
     def tearDown(self):
         shutil.rmtree(self.test_dir, ignore_errors=True) # Remove the directory after the test
 
     def test_get_instances(self):
-        instance_job = self.data_job.instance("test_job_name_x", ["other_job_name_x"], {"executor.cores": "2"})
+        instance_job = self.data_job.instance("test_job_name_x", None, ["other_job_name_x"], None, {"executor.cores": "2"})
 
         self.assertIsInstance(instance_job, Job)
 
@@ -53,14 +53,14 @@ class JobTest(TestCase):
         self.assertEqual(expected, actual)
 
     def test_write_in_folder(self):
-        name = "{}.job".format(self.data_job.name)
         content = self.data_job.as_type(Python)
         content._add_items()
         content._write(self.test_dir)
-        f = open(path.join(self.test_dir, name))
+        f = open(path.join(self.test_dir, path.basename(self.test_dir)+".flow"))
         expected = "#test_job_name.job\ndependencies=other_job_name\ndriver.memory=6g\nexecutor.cores=2\ntype=python\n"
 
         self.assertEqual(f.read(), expected)
+        f.close()
 
     def test_add_items_and_it_contains_one_dependency(self):
         content = self.data_job.as_type(Python)
@@ -77,24 +77,24 @@ class JobTest(TestCase):
         content = self.data_job.with_dependencies(data_job, data_job_2).as_type(Spark)
         content._add_items()
 
-        self.assertEqual("test_job_name,test_job_name_2", content.properties["dependencies"][0])
-        self.assertEqual("command", content.properties["type"][0])
+        self.assertEqual("test_job_name,test_job_name_2", content.dependencies)
+        self.assertEqual("command", content._type)
         self.assertEqual("2", content.properties["executor.cores"][0])
         self.assertEqual("6g", content.properties["driver.memory"][0])
 
     def test_add_items_and_it_does_not_contain_dependencies(self):
-        data_job_x = Job("name_teste_job_4", [], {"spark.version": "1.0.1"})
+        data_job_x = Job("name_teste_job_4", None, [], None, {"spark.version": "1.0.1"})
         content = data_job_x.as_type(Python)
         content._add_items()
 
         self.assertEqual([], content.dependencies)
-        self.assertEqual("python", content.properties["type"][0])
+        self.assertEqual("python", content._type)
 
 
 class CommandJobTest(TestCase):
 
     def test_with_all_default(self):
-        expected = Job("test_job_name", ["other_job_name"],
+        expected = Job("test_job_name", None, ["other_job_name"], None,
                             {"executor.cores": "2", "driver.memory": "6g"})
 
         self.assertIsInstance(expected, Job)
