@@ -57,7 +57,7 @@ class JobTest(TestCase):
         content._add_items()
         content._write(self.test_dir)
         f = open(path.join(self.test_dir, path.basename(self.test_dir)+".flow"))
-        expected = "#test_job_name.job\ndependencies=other_job_name\ndriver.memory=6g\nexecutor.cores=2\ntype=python\n"
+        expected = "nodes:\n- config:\n    driver.memory: 6g\n    executor.cores: '2'\n  dependsOn:\n  - other_job_name\n  name: test_job_name\n  nodes: []\n  type: python\n"
 
         self.assertEqual(f.read(), expected)
         f.close()
@@ -68,8 +68,8 @@ class JobTest(TestCase):
 
         self.assertEqual("other_job_name", content.properties["nodes"][0]["dependsOn"][0])
         self.assertEqual("python", content.properties["nodes"][0]["type"])
-        self.assertEqual("2", content.properties["nodes"][0]["executor.cores"])
-        self.assertEqual("6g", content.properties["nodes"][0]["driver.memory"])
+        self.assertEqual("2", content.properties["nodes"][0]["config"]["executor.cores"])
+        self.assertEqual("6g", content.properties["nodes"][0]["config"]["driver.memory"])
 
     def test_add_items_and_it_contains_two_dependencies(self):
         data_job = Job("test_job_name", [], {})
@@ -77,7 +77,7 @@ class JobTest(TestCase):
         content = self.data_job.with_dependencies(data_job, data_job_2).as_type(Spark)
         content._add_items()
 
-        self.assertEqual("test_job_name,test_job_name_2", content.dependencies)
+        self.assertEqual(["test_job_name", "test_job_name_2"], content.properties["nodes"][0]["dependsOn"])
         self.assertEqual("command", content.properties["nodes"][0]["type"])
         self.assertEqual("2", content.properties["nodes"][0]["config"]["executor.cores"])
         self.assertEqual("6g", content.properties["nodes"][0]["config"]["driver.memory"])
@@ -87,7 +87,7 @@ class JobTest(TestCase):
         content = data_job_x.as_type(Python)
         content._add_items()
 
-        self.assertEqual([], content.properties["nodes"][0]["dependsOn"])
+        self.assertEqual(None, content.properties["nodes"][0].get("dependsOn"))
         self.assertEqual("python", content.properties["nodes"][0]["type"])
 
 

@@ -17,9 +17,12 @@ class Params(object):
     def _write(self, folder):
         name = os.path.basename(folder)
         path = "{}.flow".format(os.path.join(folder, name))
-        with open(path, 'rb') as reader:
-            data = yaml.load(reader)
-        data.update(self.properties)
+        try:
+            with open(path, 'rb') as reader:
+                data = yaml.load(reader)
+            data.update(self.properties)
+        except IOError:
+            data = self.properties
 
         with open(path, 'wb') as writer:
             writer.write(
@@ -69,4 +72,4 @@ class ParamsJoin(Params):
         for param_class in self.params_class:
             for name, value in param_class._get_items():
                 param_props.append(value)
-        self.properties[self.param_name] = self.separator.join(param_props)
+        self.properties["config"][self.param_name] = self.separator.join(param_props)

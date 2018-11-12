@@ -26,15 +26,15 @@ class ParamsTest(TestCase):
     def test_add_items(self):
         self.data_params._add_items()
 
-        self.assertEqual("value_1", self.data_params.properties["param_name_1"][0])
-        self.assertEqual("value_2", self.data_params.properties["param_name_2"][0])
+        self.assertEqual("value_1", self.data_params.properties["config"]["param_name_1"])
+        self.assertEqual("value_2", self.data_params.properties["config"]["param_name_2"])
 
     def test_write_in_folder(self):
-        name = "{}.properties".format(self.data_params.name)
+        name = "{}.flow".format(path.basename(self.test_dir))
         self.data_params._add_items()
         self.data_params._write(self.test_dir)
         f = open(path.join(self.test_dir, name))
-        expected = "#name_teste_params.properties\nparam_name_1=value_1\nparam_name_2=value_2\n"
+        expected = 'config:\n  param_name_1: value_1\n  param_name_2: value_2\n'
 
         self.assertEqual(f.read(), expected)
 
@@ -99,16 +99,16 @@ class ParamsJoinTest(TestCase):
         result_actual._add_items()
         expected = "--conf spark.yarn.appMasterEnv.TESTE_SPARK_MASTER=yarn --conf spark.yarn.appMasterEnv.TESTE_HADOOP_NAME=hadoop"
 
-        self.assertEqual(expected, result_actual.properties[result_actual.param_name][0])
+        self.assertEqual(expected, result_actual.properties['config']['custom.env'])
 
     def test_write_in_folder(self):
         params_class = SparkDriver(TESTE_HADOOP_NAME="hadoop", TESTE_SPARK_MASTER="yarn")
         result_actual = self.data_params.__call__(params_class)
-        name = "{}.properties".format("_".join([param_class.name for param_class in result_actual.params_class]))
+        name = "{}.flow".format(path.basename(self.test_dir))
         result_actual._add_items()
         result_actual._write(self.test_dir)
         f = open(path.join(self.test_dir, name))
-        expected = "#params.properties\ncustom.env=--conf spark.yarn.appMasterEnv.TESTE_SPARK_MASTER\\=yarn --conf spark.yarn.appMasterEnv.TESTE_HADOOP_NAME\\=hadoop\n"
+        expected = 'config:\n  custom.env: --conf spark.yarn.appMasterEnv.TESTE_SPARK_MASTER=yarn --conf spark.yarn.appMasterEnv.TESTE_HADOOP_NAME=hadoop\n'
 
         self.assertEqual(f.read(), expected)
 
