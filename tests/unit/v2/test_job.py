@@ -4,7 +4,7 @@
 from os import path
 import shutil, tempfile
 from unittest import TestCase
-from auror.v2.job import Job, Command
+from auror_core.v2.job import Job, Command
 
 
 class JobTest(TestCase):

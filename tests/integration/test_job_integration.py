@@ -4,9 +4,9 @@
 import os
 import shutil, tempfile
 from unittest import TestCase
-from auror import Project
-from auror.job import Job, Command
-from auror.params import Params, Env, ParamsJoin
+from auror_core import Project
+from auror_core.job import Job, Command
+from auror_core.params import Params, Env, ParamsJoin
 
 params = Params(
     "params",

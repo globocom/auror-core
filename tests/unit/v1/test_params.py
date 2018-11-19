@@ -4,7 +4,7 @@
 from os import path
 import shutil, tempfile
 from unittest import TestCase
-from auror.v1.params import Params, Env, ParamsJoin
+from auror_core.v1.params import Params, Env, ParamsJoin
 
 
 class ParamsTest(TestCase):

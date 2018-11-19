@@ -79,8 +79,8 @@ Projeto criado em python para facilitar a criação de jobs do AirFlow para o Az
 #### Exemplo de criação do job com variáveis de ambiente
 
 ```
-from auror.job import Job, Spark, Project, Command
-from auror.params import Params, ParamsJoin, SparkDriver
+from auror_core.job import Job, Spark, Project, Command
+from auror_core.params import Params, ParamsJoin, SparkDriver
 
 ## Propriedades disponíveis para todos os jobs ##
 
@@ -134,8 +134,8 @@ project/
 #### Exemplo de criação do job usando extra_jars e passando argumentos (parâmetro `args`)
 
 ```
-from auror.job import Job, Spark, Project, Command
-from auror.params import Params
+from auror_core.job import Job, Spark, Project, Command
+from auror_core.params import Params
 
 ## Propriedades disponíveis para todos os jobs ##
 
