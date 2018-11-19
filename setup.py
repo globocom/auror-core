@@ -6,14 +6,15 @@ with open("version.txt") as version_file:
     version = version_file.read().strip()
 
 setup(
-    name="auror",
+    name="auror_core",
     version=version,
-    description="criação de Jobs para o Azkaban",
+    description="Doing Jobs Dinamically with Azkaban",
     author="Big Data",
     author_email="bigdata@corp.globo.com",
     license='MIT',
     install_requires=[
-        "jproperties"
+        "jproperties",
+        "pyaml"
     ],
     packages=find_packages(),
 )

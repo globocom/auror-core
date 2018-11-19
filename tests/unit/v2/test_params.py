@@ -4,7 +4,7 @@
 from os import path
 import shutil, tempfile
 from unittest import TestCase
-from auror.v2.params import Params, Env, SparkExecutor, SparkDriver, ParamsJoin, SparkConfig
+from auror.v2.params import Params, Env, ParamsJoin
 
 
 class ParamsTest(TestCase):
@@ -48,35 +48,6 @@ class EnvParamsTest(TestCase):
         self.assertEqual(expected, result_actual)
 
 
-class SparkExecutorParamsTest(TestCase):
-
-    def test_get_spark_executor_params(self):
-        result_actual = SparkExecutor(TESTE_HADOOP_NAME="hadoop", TESTE_SPARK_MASTER="yarn")._get_items()
-        expected = [("TESTE_SPARK_MASTER", "--conf spark.executorEnv.TESTE_SPARK_MASTER=yarn"),
-                    ("TESTE_HADOOP_NAME", "--conf spark.executorEnv.TESTE_HADOOP_NAME=hadoop")]
-
-        self.assertEqual(expected, result_actual)
-
-
-class SparkDriverParamsTest(TestCase):
-
-    def test_get_spark_driver_params(self):
-        result_actual = SparkDriver(TESTE_HADOOP_NAME="hadoop", TESTE_SPARK_MASTER="yarn")._get_items()
-        expected = [("TESTE_SPARK_MASTER", "--conf spark.yarn.appMasterEnv.TESTE_SPARK_MASTER=yarn"),
-                    ("TESTE_HADOOP_NAME", "--conf spark.yarn.appMasterEnv.TESTE_HADOOP_NAME=hadoop")]
-
-        self.assertEqual(expected, result_actual)
-
-class SparkConfigParamsTest(TestCase):
-
-    def test_get_spark_driver_params(self):
-        result_actual = SparkConfig(TESTE_HADOOP_NAME="hadoop", TESTE_SPARK_MASTER="yarn")._get_items()
-        expected = [("TESTE_SPARK_MASTER", "--conf TESTE_SPARK_MASTER=yarn"),
-                    ("TESTE_HADOOP_NAME", "--conf TESTE_HADOOP_NAME=hadoop")]
-
-        self.assertEqual(expected, result_actual)
-
-
 class ParamsJoinTest(TestCase):
 
     def setUp(self):
@@ -87,28 +58,28 @@ class ParamsJoinTest(TestCase):
         shutil.rmtree(self.test_dir, ignore_errors=True)
 
     def test_call_method(self):
-        params_class = SparkDriver(TESTE_HADOOP_NAME="hadoop", TESTE_SPARK_MASTER="yarn")
+        params_class = Env(TESTE_HADOOP_NAME="hadoop", TESTE_SPARK_MASTER="yarn")
         result_actual = self.data_params.__call__(params_class)
         expected = self.data_params.params_class
 
         self.assertEqual(expected, result_actual.params_class)
 
     def test_add_items(self):
-        params_class = SparkDriver(TESTE_HADOOP_NAME="hadoop", TESTE_SPARK_MASTER="yarn")
+        params_class = Env(TESTE_HADOOP_NAME="hadoop", TESTE_SPARK_MASTER="yarn")
         result_actual = self.data_params.__call__(params_class)
         result_actual._add_items()
-        expected = "--conf spark.yarn.appMasterEnv.TESTE_SPARK_MASTER=yarn --conf spark.yarn.appMasterEnv.TESTE_HADOOP_NAME=hadoop"
+        expected = "yarn hadoop"
 
         self.assertEqual(expected, result_actual.properties['config']['custom.env'])
 
     def test_write_in_folder(self):
-        params_class = SparkDriver(TESTE_HADOOP_NAME="hadoop", TESTE_SPARK_MASTER="yarn")
+        params_class = Env(TESTE_HADOOP_NAME="hadoop", TESTE_SPARK_MASTER="yarn")
         result_actual = self.data_params.__call__(params_class)
         name = "{}.flow".format(path.basename(self.test_dir))
         result_actual._add_items()
         result_actual._write(self.test_dir)
         f = open(path.join(self.test_dir, name))
-        expected = 'config:\n  custom.env: --conf spark.yarn.appMasterEnv.TESTE_SPARK_MASTER=yarn --conf spark.yarn.appMasterEnv.TESTE_HADOOP_NAME=hadoop\n'
+        expected = 'config:\n  custom.env: yarn hadoop\n'
 
         self.assertEqual(f.read(), expected)
 

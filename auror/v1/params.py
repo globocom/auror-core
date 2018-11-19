@@ -28,26 +28,6 @@ class Env(Params):
         return [("env.{}".format(name), value) for name, value in self.key_vals.items()]
 
 
-class SparkConfig(Params):
-    
-    def _get_items(self, prepend=""):
-        return [(name, "--conf {}{}={}".format(prepend, name, value)) for name, value in self.key_vals.items()]
-
-
-class SparkExecutor(SparkConfig):
-
-    def _get_items(self):
-
-        return super(SparkExecutor, self)._get_items("spark.executorEnv.")
-
-
-class SparkDriver(SparkConfig):
-
-    def _get_items(self):
-
-        return super(SparkDriver, self)._get_items("spark.yarn.appMasterEnv.")
-
-
 class ParamsJoin:
 
     def __init__(self, param_name="custom.envs", separator=" "):
