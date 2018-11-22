@@ -2,7 +2,7 @@
 
 Simple Flow creation for Azkaban
 
-(auror)[https://pm1.narvii.com/6278/52c20397d131f309c687f0baa5125968cf79aea3_hq.jpg]
+![auror](https://pm1.narvii.com/6278/52c20397d131f309c687f0baa5125968cf79aea3_hq.jpg)
 
 ## Install
 ```
