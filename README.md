@@ -235,4 +235,6 @@ Project("folder_to_generate_files", com)\
 
 Plugins are just extensions from auror_core
 
+There is a cookiecutter for new azkaban jobtypes with Auror template too: https://github.com/globocom/azkaban-jobtype-cookiecutter
+
 We already have email plugin: https://github.com/globocom/azkaban-jobtype-email
