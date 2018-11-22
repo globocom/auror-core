@@ -1,5 +1,5 @@
 dist/
 build/
 *.pyc
-auror_core.egg-info/
+auror_core.egg-info
 .vscode
