@@ -56,11 +56,9 @@ class JobTest(TestCase):
         content = self.data_job.as_type(Command)
         content._add_items()
         content._write(self.test_dir)
-        f = open(path.join(self.test_dir, path.basename(self.test_dir)+".flow"))
-        expected = "nodes:\n- config:\n    driver.memory: 6g\n    executor.cores: '2'\n  dependsOn:\n  - other_job_name\n  name: test_job_name\n  nodes: []\n  type: command\n"
-
-        self.assertEqual(f.read(), expected)
-        f.close()
+        with open(path.join(self.test_dir, path.basename(self.test_dir)+".flow")) as f:
+            expected = "nodes:\n- config:\n    driver.memory: 6g\n    executor.cores: '2'\n  dependsOn:\n  - other_job_name\n  name: test_job_name\n  nodes: []\n  type: command\n"
+            self.assertEqual(f.read(), expected)
 
     def test_add_items_and_it_contains_one_dependency(self):
         content = self.data_job.as_type(Command)

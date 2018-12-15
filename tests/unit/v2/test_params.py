@@ -19,9 +19,8 @@ class ParamsTest(TestCase):
 
     def test_get_items(self):
         itens_actual = self.data_params._get_items()
-        expected = [("param_name_2", "value_2"), ("param_name_1", "value_1")]
-
-        self.assertEqual(expected, itens_actual)
+        self.assertTrue(("param_name_1", "value_1") in itens_actual)
+        self.assertTrue(("param_name_2", "value_2") in itens_actual)
 
     def test_add_items(self):
         self.data_params._add_items()
@@ -33,19 +32,17 @@ class ParamsTest(TestCase):
         name = "{}.flow".format(path.basename(self.test_dir))
         self.data_params._add_items()
         self.data_params._write(self.test_dir)
-        f = open(path.join(self.test_dir, name))
-        expected = 'config:\n  param_name_1: value_1\n  param_name_2: value_2\n'
-
-        self.assertEqual(f.read(), expected)
+        with open(path.join(self.test_dir, name)) as f:
+            expected = 'config:\n  param_name_1: value_1\n  param_name_2: value_2\n'
+            self.assertEqual(f.read(), expected)
 
 
 class EnvParamsTest(TestCase):
 
     def test_get_env_params(self):
         result_actual = Env(TESTE_HADOOP_NAME="hadoop", TESTE_SPARK_MASTER="yarn")._get_items()
-        expected = [("env.TESTE_SPARK_MASTER", "yarn"), ("env.TESTE_HADOOP_NAME", "hadoop")]
-
-        self.assertEqual(expected, result_actual)
+        self.assertTrue(("env.TESTE_HADOOP_NAME", "hadoop") in result_actual)
+        self.assertTrue(("env.TESTE_SPARK_MASTER", "yarn") in result_actual)
 
 
 class ParamsJoinTest(TestCase):
@@ -68,9 +65,8 @@ class ParamsJoinTest(TestCase):
         params_class = Env(TESTE_HADOOP_NAME="hadoop", TESTE_SPARK_MASTER="yarn")
         result_actual = self.data_params.__call__(params_class)
         result_actual._add_items()
-        expected = "yarn hadoop"
-
-        self.assertEqual(expected, result_actual.properties['config']['custom.env'])
+        self.assertTrue("hadoop" in result_actual.properties['config']['custom.env'])
+        self.assertTrue("yarn" in result_actual.properties['config']['custom.env'])
 
     def test_write_in_folder(self):
         params_class = Env(TESTE_HADOOP_NAME="hadoop", TESTE_SPARK_MASTER="yarn")
@@ -78,8 +74,10 @@ class ParamsJoinTest(TestCase):
         name = "{}.flow".format(path.basename(self.test_dir))
         result_actual._add_items()
         result_actual._write(self.test_dir)
-        f = open(path.join(self.test_dir, name))
-        expected = 'config:\n  custom.env: yarn hadoop\n'
-
-        self.assertEqual(f.read(), expected)
+        with open(path.join(self.test_dir, name)) as f:
+            expected = 'config:\n  custom.env: '
+            content = f.read()
+            self.assertTrue(expected in content)
+            self.assertTrue("hadoop" in content)
+            self.assertTrue("yarn" in content)
 

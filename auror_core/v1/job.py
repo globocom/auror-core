@@ -1,6 +1,6 @@
 import os
 import copy
-from jproperties import Properties
+import javaproperties
 
 class Job(object):
 
@@ -8,7 +8,7 @@ class Job(object):
         self.name = name
         self.dependencies = dependencies or []
         self.extra = extra or {}
-        self.properties = Properties()
+        self.properties = dict()
 
     def instance(self, name, dependencies, extra):
         return self.__class__(name, dependencies, extra)
@@ -35,8 +35,8 @@ class Job(object):
     def _write(self, folder):
         name = "{}.job".format(self.name)
         path = os.path.join(folder, name)
-        with open(path, "wb") as f:
-            self.properties.store(f, encoding="utf-8", initial_comments=name, timestamp=False)
+        with open(path, "w") as f:
+            javaproperties.dump(self.properties, f, comments=name, timestamp=False, sort_keys=True)
     
     def _add_items(self):
         job = self.before_add_hook()

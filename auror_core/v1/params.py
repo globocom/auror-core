@@ -1,15 +1,15 @@
 import os
-from jproperties import Properties
+import javaproperties
 
 class Params(object):
 
     def __init__(self, name="params", **key_vals):
         self.name = name
         self.key_vals = key_vals
-        self.properties = Properties()
+        self.properties = dict()
 
     def _get_items(self):
-        return self.key_vals.items()
+        return list(self.key_vals.items())
 
     def _add_items(self):
         for name, value in self._get_items():
@@ -18,8 +18,8 @@ class Params(object):
     def _write(self, folder):
         name = "{}.properties".format(self.name)
         path = os.path.join(folder, name)
-        with open(path, "wb") as f:
-            self.properties.store(f, encoding="utf-8", initial_comments=name, timestamp=False)
+        with open(path, "w") as f:
+            javaproperties.dump(self.properties, f, comments=name, timestamp=False, sort_keys=True)
 
 
 class Env(Params):
@@ -33,7 +33,7 @@ class ParamsJoin:
     def __init__(self, param_name="custom.envs", separator=" "):
         self.param_name = param_name
         self.separator = separator
-        self.properties = Properties()
+        self.properties = dict()
         self.params_class = []
 
     def __call__(self, *params_class):
@@ -50,5 +50,5 @@ class ParamsJoin:
     def _write(self, folder):
         name = "{}.properties".format("_".join([param_class.name for param_class in self.params_class]))
         path = os.path.join(folder, name)
-        with open(path, "wb") as f:
-            self.properties.store(f, encoding="utf-8", initial_comments=name, timestamp=False)
+        with open(path, "w") as f:
+            javaproperties.dump(self.properties, f, comments=name, timestamp=False, sort_keys=True)

@@ -1,1 +1,1 @@
-from v1.params import *
+from auror_core.v1.params import *

@@ -112,7 +112,7 @@ Project("folder_to_generate_files", com1).write()
 V2 already have flow included
 
 ```
-from auror_core.v1.job import Command, Flow
+from auror_core.v1.job import Command, Flow, Job
 from auror_core import Project
 
 com1 = Command()\
@@ -121,7 +121,7 @@ com1 = Command()\
 
 flow = Job()\
 .as_type(Flow)\
-.with_name("flow")
+.with_name("flow")\
 .with_dependencies(com1)
 
 Project("folder_to_generate_files", com1, flow).write()
@@ -145,7 +145,7 @@ com = Command()\
 
 Project("folder_to_generate_files", com)\
 .is_v2()\
-.with_params(params)
+.with_params(params)\
 .write()
 
 ```
@@ -168,7 +168,7 @@ com = Command()\
 
 Project("folder_to_generate_files", com)\
 .is_v2()\
-.with_params(env)
+.with_params(env)\
 .write()
 
 ```
@@ -196,7 +196,7 @@ com = Command()\
 
 Project("folder_to_generate_files", com)\
 .is_v2()\
-.with_params(params, env)
+.with_params(params, env)\
 .write()
 
 ```
@@ -223,10 +223,11 @@ one_param = ParamsJoin("params_strange_name", ",") ## param name and separator
 com = Command()\
 .with_command("bash echo ${params_strange_name}") 
 ## it will print: my test,my variable,env test,env variable
+## THERE IS NO ORDER GUARANTEE, JUST Python 3.6 >
 
 Project("folder_to_generate_files", com)\
 .is_v2()\
-.with_params(one_param(params, env))
+.with_params(one_param(params, env))\
 .write()
 
 ```
