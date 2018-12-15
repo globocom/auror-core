@@ -57,19 +57,18 @@ class JobTest(TestCase):
         content = self.data_job.as_type(Command)
         content._add_items()
         content._write(self.test_dir)
-        f = open(path.join(self.test_dir, name))
-        expected = "#test_job_name.job\ndependencies=other_job_name\ndriver.memory=6g\nexecutor.cores=2\ntype=command\n"
-
-        self.assertEqual(f.read(), expected)
+        with open(path.join(self.test_dir, name)) as f:
+            expected = "#test_job_name.job\ndependencies=other_job_name\ndriver.memory=6g\nexecutor.cores=2\ntype=command\n"
+            self.assertEqual(f.read(), expected)
 
     def test_add_items_and_it_contains_one_dependency(self):
         content = self.data_job.as_type(Command)
         content._add_items()
 
-        self.assertEqual("other_job_name", content.properties["dependencies"][0])
-        self.assertEqual("command", content.properties["type"][0])
-        self.assertEqual("2", content.properties["executor.cores"][0])
-        self.assertEqual("6g", content.properties["driver.memory"][0])
+        self.assertEqual("other_job_name", content.properties["dependencies"])
+        self.assertEqual("command", content.properties["type"])
+        self.assertEqual("2", content.properties["executor.cores"])
+        self.assertEqual("6g", content.properties["driver.memory"])
 
     def test_add_items_and_it_contains_two_dependencies(self):
         data_job = Job("test_job_name", [], {})
@@ -77,10 +76,10 @@ class JobTest(TestCase):
         content = self.data_job.with_dependencies(data_job, data_job_2).as_type(Command)
         content._add_items()
 
-        self.assertEqual("test_job_name,test_job_name_2", content.properties["dependencies"][0])
-        self.assertEqual("command", content.properties["type"][0])
-        self.assertEqual("2", content.properties["executor.cores"][0])
-        self.assertEqual("6g", content.properties["driver.memory"][0])
+        self.assertEqual("test_job_name,test_job_name_2", content.properties["dependencies"])
+        self.assertEqual("command", content.properties["type"])
+        self.assertEqual("2", content.properties["executor.cores"])
+        self.assertEqual("6g", content.properties["driver.memory"])
 
     def test_add_items_and_it_does_not_contain_dependencies(self):
         data_job_x = Job("name_teste_job_4", [], {"spark.version": "1.0.1"})
@@ -88,7 +87,7 @@ class JobTest(TestCase):
         content._add_items()
 
         self.assertEqual([], content.dependencies)
-        self.assertEqual("command", content.properties["type"][0])
+        self.assertEqual("command", content.properties["type"])
 
 
 class CommandJobTest(TestCase):

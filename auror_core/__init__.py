@@ -1,4 +1,5 @@
 import copy
+import os
 
 class Project(object):
 
@@ -31,5 +32,5 @@ class Project(object):
             jobtype._write(self.folder)
         
         if self.version == 2:
-            with open('flow20.project', 'w') as project:
+            with open(os.path.join(self.folder, 'flow20.project'), 'w') as project:
                 project.write('azkaban-flow-version: 2.0')

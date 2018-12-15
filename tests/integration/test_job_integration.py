@@ -47,7 +47,7 @@ class TestCaseWithNecessaryConditions(TestCase):
 class ParamsPropertiesFileTest(TestCaseWithNecessaryConditions):
 
     def test_check_if_directory_created_has_params_file_only(self):
-    	project = Project(self.test_dir)
+        project = Project(self.test_dir)
         project.with_params(params).write()
 
         tmp_dir = self.list_files()
@@ -59,10 +59,9 @@ class ParamsPropertiesFileTest(TestCaseWithNecessaryConditions):
         project = Project(self.test_dir)
         project.with_params(params).write()
 
-        f = self.open_file("params.properties")
-        expected = "#params.properties\nfailure.emails=email@gmail.com\nretries=2\nretry.backoff=30000\n"
-
-        self.assertEqual(expected, f.read())
+        with self.open_file("params.properties") as f:
+            expected = "#params.properties\nfailure.emails=email@gmail.com\nretries=2\nretry.backoff=30000\n"
+            self.assertEqual(expected, f.read())
 
 
 class EnvPropertiesFileTest(TestCaseWithNecessaryConditions):
@@ -80,10 +79,12 @@ class EnvPropertiesFileTest(TestCaseWithNecessaryConditions):
         project = Project(self.test_dir)
         project.with_params(ParamsJoin()(envs)).write()
 
-        f = self.open_file("some_envs.properties")
-        expected = "#some_envs.properties\ncustom.envs=yarn xxxxxxxx\n"
-
-        self.assertEqual(expected, f.read())
+        with self.open_file("some_envs.properties") as f:
+            expected = "#some_envs.properties\ncustom.envs="
+            content = f.read()
+            self.assertTrue(expected in content)
+            self.assertTrue("xxxxxxxx" in content)
+            self.assertTrue("yarn" in content)
 
 
 class JobTypeCommandTest(TestCaseWithNecessaryConditions):
@@ -101,7 +102,6 @@ class JobTypeCommandTest(TestCaseWithNecessaryConditions):
         project = Project(self.test_dir, job1_command)
         project.with_params().write()
 
-        f = self.open_file("job1_command.job")
-        expected = "#job1_command.job\ncommand=${python} -c 'from test import test_method; test_method()'\ntype=command\n"
-
-        self.assertEqual(expected, f.read())
+        with self.open_file("job1_command.job") as f:
+            expected = "#job1_command.job\ncommand=${python} -c 'from test import test_method; test_method()'\ntype=command\n"
+            self.assertEqual(expected, f.read())

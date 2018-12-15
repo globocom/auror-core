@@ -9,7 +9,7 @@ class Params(object):
         self.properties = dict(config=dict())
 
     def _get_items(self):
-        return self.key_vals.items()
+        return list(self.key_vals.items())
 
     def _add_items(self):
         self.properties['config'] = dict(self._get_items())
@@ -24,7 +24,7 @@ class Params(object):
         except IOError:
             data = self.properties
 
-        with open(path, 'wb') as writer:
+        with open(path, 'w') as writer:
             writer.write(
                 yaml.dump(data, default_flow_style=False)
             )

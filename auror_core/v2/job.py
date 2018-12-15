@@ -49,7 +49,7 @@ class Job(object):
             data.update(self.properties)
         except IOError:
             data = self.properties
-        with open(path, 'wb') as writer:
+        with open(path, 'w') as writer:
             writer.write(
                 yaml.dump(data, default_flow_style=False)
             )
