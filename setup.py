@@ -8,13 +8,14 @@ with open("version.txt") as version_file:
 setup(
     name="auror_core",
     version=version,
+    long_description=open('README.md').read(),
     description="Doing Jobs Dinamically with Azkaban",
     author="Big Data",
     author_email="bigdata@corp.globo.com",
     license='MIT',
     install_requires=[
-        "jproperties",
-        "pyaml"
+        "javaproperties==0.5.1",
+        "pyaml==18.11.0"
     ],
     packages=find_packages(),
 )
