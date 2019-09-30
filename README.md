@@ -1,4 +1,5 @@
 # Auror Core
+[![Build Status](https://travis-ci.com/globocom/auror-core.svg?branch=master)](https://travis-ci.com/globocom/auror-core)
 
 Simple Flow creation for Azkaban
 
@@ -239,3 +240,7 @@ Plugins are just extensions from auror_core
 There is a cookiecutter for new azkaban jobtypes with Auror template too: https://github.com/globocom/azkaban-jobtype-cookiecutter
 
 We already have email plugin: https://github.com/globocom/azkaban-jobtype-email
+
+## Contribute
+
+For development and contributing, please follow [Contributing Guide](https://github.com/globocom/auror-core/blob/master/CONTRIBUTING.md) and ALWAYS respect the [Code of Conduct](https://github.com/globocom/auror-core/blob/master/CODE_OF_CONDUCT.md)
