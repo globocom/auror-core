@@ -1,12 +1,13 @@
-# Auror Core
 [![Build Status](https://travis-ci.com/globocom/auror-core.svg?branch=master)](https://travis-ci.com/globocom/auror-core)
 
-Simple Flow creation for Azkaban
+# Auror Core
+> Simple Flow creation for Azkaban
 
 ![auror](https://pm1.narvii.com/6278/52c20397d131f309c687f0baa5125968cf79aea3_hq.jpg)
 
 ## Install
-```
+
+```bash
 pip install auror_core
 ```
 
@@ -16,7 +17,7 @@ pip install auror_core
 
 You just need to import job type and project
 
-```
+```python
 from auror_core.v1.job import Job, Command
 from auror_core import Project
 
@@ -34,7 +35,7 @@ Project("folder_to_generate_files", com1).write()
 
 V2 flow is implemented under v2 subfolder with same job types
 
-```
+```python
 from auror_core.v2.job import Job, Command
 from auror_core import Project
 
@@ -50,7 +51,7 @@ Project("folder_to_generate_files", com1).is_v2().write()
 
 ### Creating Flows with dependencies
 
-```
+```python
 from auror_core.v2.job import Job, Command
 from auror_core import Project
 
@@ -73,7 +74,7 @@ Project("folder_to_generate_files", com1, com2).is_v2().write()
 
 Organize jobs with same configuration
 
-```
+```python
 from auror_core.v2.job import Command
 from auror_core import Project
 
@@ -94,7 +95,7 @@ Project("folder_to_generate_files", com1, com2).is_v2().write()
 
 Simulating a Command with base Job (NOT RECOMMENDED)
 
-```
+```python
 from auror_core.v1.job import Job
 from auror_core import Project
 
@@ -112,7 +113,7 @@ Project("folder_to_generate_files", com1).write()
 
 V2 already have flow included
 
-```
+```python
 from auror_core.v1.job import Command, Flow, Job
 from auror_core import Project
 
@@ -131,7 +132,7 @@ Project("folder_to_generate_files", com1, flow).write()
 
 ### Using Flow Params
 
-```
+```python
 from auror_core.v2.job import Command
 from auror_core.v2.params import Params
 from auror_core import Project
@@ -154,7 +155,7 @@ Project("folder_to_generate_files", com)\
 ### Using Flow Environment Variables
 
 
-```
+```python
 from auror_core.v2.job import Command
 from auror_core.v2.params import Env
 from auror_core import Project
@@ -177,7 +178,7 @@ Project("folder_to_generate_files", com)\
 ### Using Flow Environment Variables and Params
 
 
-```
+```python
 from auror_core.v2.job import Command
 from auror_core.v2.params import Env, Params
 from auror_core import Project
@@ -204,7 +205,7 @@ Project("folder_to_generate_files", com)\
 
 ### Join multiple variables in one
 
-```
+```python
 from auror_core.v2.job import Command
 from auror_core.v2.params import Env
 from auror_core import Project
