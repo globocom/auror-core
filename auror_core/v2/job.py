@@ -85,6 +85,9 @@ class Command(Job):
         return self.with_(command=command)
 
     def with_another_command(self, command):
+        if not command:
+            return self
+        
         if not self.extra.get("command"):
             return self.with_command(command)
 
