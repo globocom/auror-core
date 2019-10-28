@@ -7,7 +7,7 @@ from auror_core.v2.job import Job
 from auror_core.v2 import JobType
 
 
-class YAMLLoader:
+class Loader:
     def __init__(self, flow_file_path):
         if not os.path.exists(flow_file_path):
             raise ValueError('File does not exists')
