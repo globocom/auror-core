@@ -72,7 +72,10 @@ class Job(object):
     def _add_items(self):
         job = self.before_add_hook()
         self.properties["nodes"].append(self._get_node(job))
-
+    
+    @classmethod
+    def build(cls, data):
+        raise NotImplementedError('"build" method is not implemented')
 
 
 class Command(Job):
