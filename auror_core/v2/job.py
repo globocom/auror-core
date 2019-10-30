@@ -98,3 +98,14 @@ class Command(Job):
         while self.extra.get("command.{}".format(counter)):
             counter += 1
         return self.with_(**{"command.{}".format(counter): command})
+    
+    @classmethod
+    def build(cls, data):
+        return cls(
+            name=data['name'],
+            config=data.get('config'),
+            dependencies=data.get('dependsOn'),
+            nodes=data.get('nodes'),
+            extra=data.get('extra')
+        ).with_command(data['command']) \
+        .with_another_command(data.get('anotherCommand'))
