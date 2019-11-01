@@ -107,5 +107,5 @@ class Command(Job):
             dependencies=data.get('dependsOn'),
             nodes=data.get('nodes'),
             extra=data.get('extra')
-        ).with_command(data['command']) \
+        ).with_command(data['config']['command']) \
         .with_another_command(data.get('anotherCommand'))
