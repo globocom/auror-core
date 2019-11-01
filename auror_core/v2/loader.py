@@ -20,10 +20,15 @@ class Loader:
         return config, yaml_file['nodes']
     
     def as_job_objects(self):
-        return [
-            JobType.get_job_type_class(job['type']).build(job)
-            for job in self._jobs
-        ]
+        return self.__as_job_objects(self._jobs)
+    
+    def __as_job_objects(self, jobs):
+        return [self.__build_job(job) for job in self._jobs]
+    
+    def __build_job(self, job):
+        if job.get('node'):
+            job['nodes'] = self.__as_job_objects(job.get('nodes'))
+        return JobType.get_job_type_class(job.get('type')).build(job)
 
     def as_python_file(self):
         raise NotImplementedError('"as_python_file" method is not implemented yet')
