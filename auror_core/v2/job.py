@@ -1,6 +1,11 @@
 import os
 import copy
+
 import yaml
+
+from collections import namedtuple
+from functools import reduce
+
 
 class Job(object):
 
@@ -80,27 +85,43 @@ class Job(object):
 
 class Command(Job):
     _type = "command"
+    _Command = namedtuple('_Command', ['command', 'command_number'])
 
     def with_all_default(self):
         return self.instance(self.name, self.config, self.dependencies, self.nodes, self.extra)
 
     def with_command(self, command):
         return self.with_(command=command)
+    
+    def with_another_commands(self, commands):
+        return reduce(
+            lambda instance, command: instance.with_another_command(*command),
+            commands,
+            self
+        )
 
-    def with_another_command(self, command):
+    def with_another_command(self, command, command_number=None):
         if not command:
             return self
         
         if not self.extra.get("command"):
             return self.with_command(command)
-
+ 
+        command_number = command_number or self.__get_next_command_number()
+        return self.with_(**{"command.{}".format(command_number): command})
+    
+    def __get_next_command_number(self):
         counter = 1
         while self.extra.get("command.{}".format(counter)):
             counter += 1
-        return self.with_(**{"command.{}".format(counter): command})
+        return counter
     
     @classmethod
     def build(cls, data):
+        extra_commands = [
+            cls._Command(value, key.split('.')[-1])
+            for key, value in data['config'].items() if 'command.' in key
+        ]
         return cls(
             name=data['name'],
             config=data.get('config'),
@@ -108,4 +129,4 @@ class Command(Job):
             nodes=data.get('nodes'),
             extra=data.get('extra')
         ).with_command(data['config']['command']) \
-        .with_another_command(data.get('anotherCommand'))
+        .with_another_commands(extra_commands)
