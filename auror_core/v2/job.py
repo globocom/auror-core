@@ -16,6 +16,15 @@ class Job(object):
         self.nodes = nodes or []
         self.extra = extra or {}
         self.properties = dict(nodes=list())
+    
+    def __eq__(self, other):
+        return (isinstance(other, Job)) and \
+            self.name == other.name and \
+            self.config == other.config and \
+            self.dependencies == other.dependencies and \
+            self.nodes == other.nodes and \
+            self.extra == other.extra and \
+            self.properties == other.properties
 
     def instance(self, name, config, dependencies, nodes, extra):
         return self.__class__(name, config, dependencies, nodes, extra)
@@ -87,6 +96,10 @@ class Command(Job):
     _type = "command"
     _Command = namedtuple('_Command', ['command', 'command_number'])
 
+    def __eq__(self, other):
+        return super(Command, self).__eq__(other) and \
+            isinstance(other, Command)
+            
     def with_all_default(self):
         return self.instance(self.name, self.config, self.dependencies, self.nodes, self.extra)
 
