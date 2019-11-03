@@ -17,5 +17,8 @@ setup(
         "javaproperties==0.5.1",
         "pyaml==18.11.0"
     ],
+    extras_require={
+        "test": ["mock",]
+    },
     packages=find_packages(),
 )
