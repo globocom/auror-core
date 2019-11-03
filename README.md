@@ -10,6 +10,17 @@ Simple Flow creation for Azkaban
 pip install auror_core
 ```
 
+## Supported Job Types
+
+### V1
+
+* **Command**
+* **Flow**
+
+### V2
+
+* **Command**
+
 ## Usage
 
 * [Creating a simple Azkaban flow with one command](#creating-a-simple-azkaban-flow-with-one-command)
