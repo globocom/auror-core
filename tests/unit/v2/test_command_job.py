@@ -40,3 +40,48 @@ class CommandJobTest(TestCase):
 
         self.assertEqual('command', result._type)
         self.assertEqual(expected, actual)
+    
+    def test_build_method_with_one_command(self):
+        simple_job = {
+            'config': {
+                'command': 'COMMAND'
+            },
+            'dependsOn': ['firstDependencie', 'secondDependecie'],
+            'name': 'AZTest',
+        }
+        actual_job = Command.build(simple_job)
+
+        expected_job = Command(
+            simple_job['name'],
+            simple_job['config'],
+            simple_job['dependsOn']
+        ).with_command(simple_job['config']['command'])
+
+        self.assertEqual(expected_job, actual_job)
+    
+    def test_build_method_with_more_than_one_command(self):
+        extra_commands = {
+            'command.1': 'COMMAND 2',
+            'command.2': 'COMMAND 3',
+        }
+        job = {
+            'config': {
+                'command': 'COMMAND'
+            },
+            'dependsOn': ['firstDependencie', 'secondDependecie'],
+            'name': 'AZTest',
+        }
+        job['config'].update(extra_commands)
+        actual_job = Command.build(job)
+
+        expected_job = Command(
+            job['name'],
+            job['config'],
+            job['dependsOn']
+        ).with_command(job['config']['command']) \
+        .with_another_commands([
+            Command._Command(command, command_number.split('.')[-1])
+            for command_number, command in extra_commands.items()
+        ])
+
+        self.assertEqual(expected_job, actual_job)
