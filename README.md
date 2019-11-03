@@ -12,6 +12,19 @@ pip install auror_core
 
 ## Usage
 
+* [Creating a simple Azkaban flow with one command](#creating-a-simple-azkaban-flow-with-one-command)
+* [Creating a simple V2 Azkaban flow with one command](#Creating-a-simple-v2-azkaban-flow-with-one-command )
+* [Creating Flows with dependencies](#creating-flows-with-dependencies)
+* [Sharing job attributes](#sharing-job-attributes)
+* [Job with extra customization and configuration](#job-with-extra-customization-and-configuration)
+* [Integrating with Flow (just for V1)](#integrating-with-flow-(just-for-v1))
+* [Using Flow Params](#using-flow-params)
+* [Using Flow Environment Variables](#using-flow-environment-variables)
+* [Using Flow Environment Variables and Params](#using-flow-environment-variables-and-params)
+* [Join multiple variables in one](#join-multiple-variables-in-one)
+* [Load jobs from YAML File (just for V2)](#Load-jobs-from-yaml-file-(just-for-v2))
+
+
 ### Creating a simple Azkaban flow with one command 
 
 You just need to import job type and project
