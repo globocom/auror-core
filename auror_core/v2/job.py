@@ -43,7 +43,7 @@ class Job(object):
         return self.instance(self.name, self.config, dependencies, self.nodes, self.extra)
 
     def with_nodes(self, *nodes):
-        return self.instance(self.name, self.config, self.dependencies, nodes, self.extra)
+        return self.instance(self.name, self.config, self.dependencies, list(nodes), self.extra)
 
     def with_(self, **extra):
         self_extra = copy.deepcopy(self.extra)
