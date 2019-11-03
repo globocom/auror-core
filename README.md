@@ -233,6 +233,17 @@ Project("folder_to_generate_files", com)\
 
 ```
 
+### Load jobs from YAML File (just for V2)
+
+**You can find some YAML File examples on [Azkaban Flow Documentation](https://github.com/azkaban/azkaban/wiki/Azkaban-Flow-2.0-Design#flow-yaml-file)**
+
+```python
+from auror_core.v2.loader import Loader
+
+loader = Loader('/path/to/file/flow.yaml')
+jobs = loader.as_job_objects()
+```
+
 ## Plugins
 
 Plugins are just extensions from auror_core
