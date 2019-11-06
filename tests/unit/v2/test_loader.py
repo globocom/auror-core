@@ -36,6 +36,7 @@ class LoaderTest(TestCase):
         jobs = loader.as_job_objects()
 
         self.assertIsInstance(jobs, list)
+        self.assertEqual(2, len(jobs))
         self.assertTrue(all([isinstance(job, Job) for job in jobs]))
     
     @mock.patch('auror_core.v2.loader.os')
@@ -64,4 +65,5 @@ class LoaderTest(TestCase):
         ).with_command(job['config']['command'])
         expected_job = expected_job.with_nodes(expected_job)
 
+        self.assertEqual(1, len(jobs))
         self.assertEqual(expected_job, jobs[0])
