@@ -5,12 +5,6 @@ from auror_core.v2.job import Job, Command
 
 class CommandJobTest(TestCase):
 
-    def test_with_all_default(self):
-        expected = Job("test_job_name", None, ["other_job_name"], None,
-                            {"executor.cores": "2", "driver.memory": "6g"})
-
-        self.assertIsInstance(expected, Job)
-
     def test_with_command(self):
         command = "${python} -c 'from teste import teste_command_spark; teste_command_spark()'"
         result = Command().with_command(command=command)
