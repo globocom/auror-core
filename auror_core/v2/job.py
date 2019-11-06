@@ -1,6 +1,11 @@
 import os
 import copy
+
 import yaml
+
+from collections import namedtuple
+from functools import reduce
+
 
 class Job(object):
 
@@ -11,6 +16,15 @@ class Job(object):
         self.nodes = nodes or []
         self.extra = extra or {}
         self.properties = dict(nodes=list())
+    
+    def __eq__(self, other):
+        return (isinstance(other, Job)) and \
+            self.name == other.name and \
+            self.config == other.config and \
+            self.dependencies == other.dependencies and \
+            self.nodes == other.nodes and \
+            self.extra == other.extra and \
+            self.properties == other.properties
 
     def instance(self, name, config, dependencies, nodes, extra):
         return self.__class__(name, config, dependencies, nodes, extra)
@@ -29,7 +43,7 @@ class Job(object):
         return self.instance(self.name, self.config, dependencies, self.nodes, self.extra)
 
     def with_nodes(self, *nodes):
-        return self.instance(self.name, self.config, self.dependencies, nodes, self.extra)
+        return self.instance(self.name, self.config, self.dependencies, list(nodes), self.extra)
 
     def with_(self, **extra):
         self_extra = copy.deepcopy(self.extra)
@@ -72,23 +86,60 @@ class Job(object):
     def _add_items(self):
         job = self.before_add_hook()
         self.properties["nodes"].append(self._get_node(job))
-
+    
+    @classmethod
+    def build(cls, data):
+        raise NotImplementedError('"build" method is not implemented')
 
 
 class Command(Job):
     _type = "command"
+    _Command = namedtuple('_Command', ['command', 'command_number'])
 
+    def __eq__(self, other):
+        return super(Command, self).__eq__(other) and \
+            isinstance(other, Command)
+            
     def with_all_default(self):
         return self.instance(self.name, self.config, self.dependencies, self.nodes, self.extra)
 
     def with_command(self, command):
         return self.with_(command=command)
+    
+    def with_another_commands(self, commands):
+        return reduce(
+            lambda instance, command: instance.with_another_command(*command),
+            commands,
+            self
+        )
 
-    def with_another_command(self, command):
+    def with_another_command(self, command, command_number=None):
+        if not command:
+            return self
+        
         if not self.extra.get("command"):
             return self.with_command(command)
-
+ 
+        command_number = command_number or self.__get_next_command_number()
+        return self.with_(**{"command.{}".format(command_number): command})
+    
+    def __get_next_command_number(self):
         counter = 1
         while self.extra.get("command.{}".format(counter)):
             counter += 1
-        return self.with_(**{"command.{}".format(counter): command})
+        return counter
+    
+    @classmethod
+    def build(cls, data):
+        extra_commands = [
+            cls._Command(value, key.split('.')[-1])
+            for key, value in data['config'].items() if 'command.' in key
+        ]
+        return cls(
+            name=data['name'],
+            config=data.get('config'),
+            dependencies=data.get('dependsOn'),
+            nodes=data.get('nodes'),
+            extra=data.get('extra')
+        ).with_command(data['config']['command']) \
+        .with_another_commands(extra_commands)
