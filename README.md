@@ -269,6 +269,23 @@ loader = Loader('/path/to/file/flow.yaml')
 jobs = loader.as_job_objects()
 ```
 
+### Dump memory flows to a Python File (just for V2)
+
+```python
+from auror_core.v2.dumper import Dumper
+
+com1 = Job() \
+.with_name("commands job 1") \
+.with_(command="bash echo 1")
+
+com2 = Job()\
+.with_name("commands job 2")\
+.with_(command="bash echo 2")
+
+dumper = Dumper('/path/to/desired/directory') # will be dumped with 'flow.py' name
+dumper.dump_jobs(com1, com2)
+```
+
 ## Plugins
 
 Plugins are just extensions from auror_core
