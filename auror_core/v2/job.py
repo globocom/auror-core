@@ -25,6 +25,16 @@ class Job(object):
             self.nodes == other.nodes and \
             self.extra == other.extra and \
             self.properties == other.properties
+    
+    def __repr__(self):
+        return "{}(name='{}', config={}, dependencies={}, nodes={}, extra={})".format(
+            type(self).__name__,
+            self.name,
+            self.config,
+            self.dependencies,
+            self.nodes,
+            self.extra,
+        )
 
     def instance(self, name, config, dependencies, nodes, extra):
         return self.__class__(name, config, dependencies, nodes, extra)
