@@ -35,6 +35,7 @@ pip install auror_core
 * [Using Flow Environment Variables and Params](#using-flow-environment-variables-and-params)
 * [Join multiple variables in one](#join-multiple-variables-in-one)
 * [Load jobs from YAML File (just for V2)](#Load-jobs-from-yaml-file-(just-for-v2))
+* [Dump memory flows to a Python File (just for V2)](#dump-memory-flows-to-a-python-file-(just-for-v2))
 
 
 ### Creating a simple Azkaban flow with one command 
