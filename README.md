@@ -269,6 +269,15 @@ loader = Loader('/path/to/file/flow.yaml')
 jobs = loader.as_job_objects()
 ```
 
+Or you can export these jobs as a Python File
+
+```python
+from auror_core.v2.loader import Loader
+
+loader = Loader('/path/to/file/flow.yaml')
+jobs = loader.as_python_file('/path/to/desired/directory') # will be dumped with 'flow.py' name
+```
+
 ### Dump memory flows to a Python File (just for V2)
 
 ```python
