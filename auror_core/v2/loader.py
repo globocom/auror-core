@@ -1,9 +1,9 @@
 import os
-import copy
 
 import yaml
 
 from auror_core.v2.job import Job
+from auror_core.v2.dumper import Dumper
 from auror_core.v2 import JobType
 
 
@@ -30,5 +30,6 @@ class Loader:
             job['nodes'] = self.__as_job_objects(job.get('nodes'))
         return JobType.get_job_type_class(job.get('type')).build(job)
 
-    def as_python_file(self):
-        raise NotImplementedError('"as_python_file" method is not implemented yet')
+    def as_python_file(self, directory):
+        dumper = Dumper(directory)
+        dumper.dump_jobs(*self.as_job_objects())
