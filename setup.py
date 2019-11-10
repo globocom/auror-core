@@ -15,7 +15,8 @@ setup(
     license='MIT',
     install_requires=[
         "javaproperties==0.5.1",
-        "pyaml==18.11.0"
+        "pyaml==18.11.0",
+        "autopep8==1.4.4",
     ],
     extras_require={
         "test": ["mock",]
