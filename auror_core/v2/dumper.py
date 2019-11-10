@@ -13,7 +13,7 @@ class Dumper:
         self.path = path
 
     def dump_jobs(self, *jobs):
-        _path = f'{self.path}/flow.py'
+        _path = '{}/flow.py'.format(self.path)
         with open(_path, 'w') as _file:
             _file.write(self.DEFAULT_IMPORTS)
             for job_number, job in enumerate(jobs):
