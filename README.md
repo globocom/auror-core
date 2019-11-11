@@ -35,6 +35,7 @@ pip install auror_core
 * [Using Flow Environment Variables and Params](#using-flow-environment-variables-and-params)
 * [Join multiple variables in one](#join-multiple-variables-in-one)
 * [Load jobs from YAML File (just for V2)](#Load-jobs-from-yaml-file-(just-for-v2))
+* [Dump memory flows to a Python File (just for V2)](#dump-memory-flows-to-a-python-file-(just-for-v2))
 
 
 ### Creating a simple Azkaban flow with one command 
@@ -267,6 +268,32 @@ from auror_core.v2.loader import Loader
 
 loader = Loader('/path/to/file/flow.yaml')
 jobs = loader.as_job_objects()
+```
+
+Or you can export these jobs as a Python File
+
+```python
+from auror_core.v2.loader import Loader
+
+loader = Loader('/path/to/file/flow.yaml')
+jobs = loader.as_python_file('/path/to/desired/directory') # will be dumped with 'flow.py' name
+```
+
+### Dump memory flows to a Python File (just for V2)
+
+```python
+from auror_core.v2.dumper import Dumper
+
+com1 = Job() \
+.with_name("commands job 1") \
+.with_(command="bash echo 1")
+
+com2 = Job()\
+.with_name("commands job 2")\
+.with_(command="bash echo 2")
+
+dumper = Dumper('/path/to/desired/directory') # will be dumped with 'flow.py' name
+dumper.dump_jobs(com1, com2)
 ```
 
 ## Plugins
