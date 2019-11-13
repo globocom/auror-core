@@ -17,7 +17,8 @@ else
 	@git commit version.txt -m "Bump $(VERSION)"
 	@git push --tags
 	@git push origin HEAD
-	@python setup.py sdist upload -r pypi
+	@python setup.py sdist
+	@twine upload dist/*
 endif
 
 test:

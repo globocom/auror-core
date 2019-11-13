@@ -13,6 +13,7 @@ setup(
     author="Big Data",
     author_email="bigdata@corp.globo.com",
     license='MIT',
+    long_description_content_type='text/markdown',
     install_requires=[
         "javaproperties==0.5.1",
         "pyaml==18.11.0",
