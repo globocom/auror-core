@@ -15,10 +15,16 @@ Please note we have a code of conduct, please follow it in all your interactions
 make install
 ```
 
-### Tests
+#### Format to PEP8 if necessary
 
 ```bash
-make test
+make pep8format
+```
+
+### Tests & PEP8
+
+```bash
+make verifypep8 test
 ```
 
 ### Publish to Pypi
