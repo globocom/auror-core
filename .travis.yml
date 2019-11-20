@@ -11,4 +11,4 @@ install:
   - pip install .[test]
 # command to run tests
 script:
-  - make test
+  - make verifypep8 test
