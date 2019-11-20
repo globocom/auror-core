@@ -1,6 +1,7 @@
 import os
 import yaml
 
+
 class Params(object):
 
     def __init__(self, name="params", **key_vals):
@@ -29,11 +30,12 @@ class Params(object):
                 yaml.dump(data, default_flow_style=False)
             )
 
+
 class Env(Params):
 
     def _get_items(self):
-        return [("env.{}".format(name), value) for name, value in self.key_vals.items()]
-
+        return [("env.{}".format(name), value)
+                for name, value in self.key_vals.items()]
 
 
 class ParamsJoin(Params):
@@ -53,4 +55,5 @@ class ParamsJoin(Params):
         for param_class in self.params_class:
             for name, value in param_class._get_items():
                 param_props.append(value)
-        self.properties["config"][self.param_name] = self.separator.join(param_props)
+        self.properties["config"][self.param_name] = self.separator.join(
+            param_props)

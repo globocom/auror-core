@@ -4,7 +4,7 @@ import autopep8
 
 
 class Dumper:
-    
+
     DEFAULT_IMPORTS = 'from auror_core.v2.job import Command\n\n\n'
 
     def __init__(self, path):
