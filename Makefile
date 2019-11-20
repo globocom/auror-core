@@ -21,5 +21,8 @@ else
 	@twine upload dist/*
 endif
 
+verifypep8:
+	find ./auror_core -name \*.py -exec pycodestyle {} +
+
 test:
 	@python -m unittest discover
