@@ -1,6 +1,7 @@
 import os
 import javaproperties
 
+
 class Params(object):
 
     def __init__(self, name="params", **key_vals):
@@ -19,13 +20,19 @@ class Params(object):
         name = "{}.properties".format(self.name)
         path = os.path.join(folder, name)
         with open(path, "w") as f:
-            javaproperties.dump(self.properties, f, comments=name, timestamp=False, sort_keys=True)
+            javaproperties.dump(
+                self.properties,
+                f,
+                comments=name,
+                timestamp=False,
+                sort_keys=True)
 
 
 class Env(Params):
 
     def _get_items(self):
-        return [("env.{}".format(name), value) for name, value in self.key_vals.items()]
+        return [("env.{}".format(name), value)
+                for name, value in self.key_vals.items()]
 
 
 class ParamsJoin:
@@ -48,7 +55,13 @@ class ParamsJoin:
         self.properties[self.param_name] = self.separator.join(param_props)
 
     def _write(self, folder):
-        name = "{}.properties".format("_".join([param_class.name for param_class in self.params_class]))
+        name = "{}.properties".format(
+            "_".join([param_class.name for param_class in self.params_class]))
         path = os.path.join(folder, name)
         with open(path, "w") as f:
-            javaproperties.dump(self.properties, f, comments=name, timestamp=False, sort_keys=True)
+            javaproperties.dump(
+                self.properties,
+                f,
+                comments=name,
+                timestamp=False,
+                sort_keys=True)

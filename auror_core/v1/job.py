@@ -2,6 +2,7 @@ import os
 import copy
 import javaproperties
 
+
 class Job(object):
 
     def __init__(self, name="DefaultJob", dependencies=None, extra=None):
@@ -36,8 +37,13 @@ class Job(object):
         name = "{}.job".format(self.name)
         path = os.path.join(folder, name)
         with open(path, "w") as f:
-            javaproperties.dump(self.properties, f, comments=name, timestamp=False, sort_keys=True)
-    
+            javaproperties.dump(
+                self.properties,
+                f,
+                comments=name,
+                timestamp=False,
+                sort_keys=True)
+
     def _add_items(self):
         job = self.before_add_hook()
         self.properties["type"] = job._type

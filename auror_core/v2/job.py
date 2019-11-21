@@ -9,14 +9,20 @@ from functools import reduce
 
 class Job(object):
 
-    def __init__(self, name="DefaultJob", config=None, dependencies=None, nodes=None, extra=None):
+    def __init__(
+            self,
+            name="DefaultJob",
+            config=None,
+            dependencies=None,
+            nodes=None,
+            extra=None):
         self.name = name
         self.config = config or {}
         self.dependencies = dependencies or []
         self.nodes = nodes or []
         self.extra = extra or {}
         self.properties = dict(nodes=list())
-    
+
     def __eq__(self, other):
         return (isinstance(other, Job)) and \
             self.name == other.name and \
@@ -25,44 +31,80 @@ class Job(object):
             self.nodes == other.nodes and \
             self.extra == other.extra and \
             self.properties == other.properties
-    
+
     def __repr__(self):
-        return "{}(name='{}', config={}, dependencies={}, nodes={}, extra={})".format(
-            type(self).__name__,
-            self.name,
-            self.config,
-            self.dependencies,
-            self.nodes,
-            self.extra,
-        )
+        return "{}(name='{}', config={}, dependencies={}, nodes={}, extra={})"\
+            .format(
+                type(self).__name__,
+                self.name,
+                self.config,
+                self.dependencies,
+                self.nodes,
+                self.extra,
+            )
 
     def instance(self, name, config, dependencies, nodes, extra):
         return self.__class__(name, config, dependencies, nodes, extra)
 
     def as_type(self, type_class):
-        return type_class(self.name, self.config, self.dependencies, self.nodes, self.extra)
+        return type_class(
+            self.name,
+            self.config,
+            self.dependencies,
+            self.nodes,
+            self.extra)
 
     def with_name(self, name):
-        return self.instance(name, self.config, self.dependencies, self.nodes, self.extra)
-    
+        return self.instance(
+            name,
+            self.config,
+            self.dependencies,
+            self.nodes,
+            self.extra)
+
     def with_config(self, config):
-        return self.instance(name, self.config, self.dependencies, self.nodes, self.extra)
+        return self.instance(
+            name,
+            self.config,
+            self.dependencies,
+            self.nodes,
+            self.extra)
 
     def with_dependencies(self, *dependencies):
         dependencies = [dependency.name for dependency in dependencies]
-        return self.instance(self.name, self.config, dependencies, self.nodes, self.extra)
+        return self.instance(
+            self.name,
+            self.config,
+            dependencies,
+            self.nodes,
+            self.extra)
 
     def with_nodes(self, *nodes):
-        return self.instance(self.name, self.config, self.dependencies, list(nodes), self.extra)
+        return self.instance(
+            self.name,
+            self.config,
+            self.dependencies,
+            list(nodes),
+            self.extra)
 
     def with_(self, **extra):
         self_extra = copy.deepcopy(self.extra)
         self_extra.update(extra)
-        return self.instance(self.name, self.config, self.dependencies, self.nodes, self_extra)
+        return self.instance(
+            self.name,
+            self.config,
+            self.dependencies,
+            self.nodes,
+            self_extra)
 
     # called on _add_items for custom types
     def before_add_hook(self):
-        return self.instance(self.name, self.config, self.dependencies, self.nodes, self.extra)
+        return self.instance(
+            self.name,
+            self.config,
+            self.dependencies,
+            self.nodes,
+            self.extra)
 
     def _write(self, folder):
         name = os.path.basename(folder)
@@ -77,7 +119,7 @@ class Job(object):
             writer.write(
                 yaml.dump(data, default_flow_style=False)
             )
-    
+
     def _get_subnodes(self, job):
         return [node.properties["nodes"] for node in job.nodes]
 
@@ -96,7 +138,7 @@ class Job(object):
     def _add_items(self):
         job = self.before_add_hook()
         self.properties["nodes"].append(self._get_node(job))
-    
+
     @classmethod
     def build(cls, data):
         raise NotImplementedError('"build" method is not implemented')
@@ -109,13 +151,18 @@ class Command(Job):
     def __eq__(self, other):
         return super(Command, self).__eq__(other) and \
             isinstance(other, Command)
-            
+
     def with_all_default(self):
-        return self.instance(self.name, self.config, self.dependencies, self.nodes, self.extra)
+        return self.instance(
+            self.name,
+            self.config,
+            self.dependencies,
+            self.nodes,
+            self.extra)
 
     def with_command(self, command):
         return self.with_(command=command)
-    
+
     def with_another_commands(self, commands):
         return reduce(
             lambda instance, command: instance.with_another_command(*command),
@@ -126,19 +173,19 @@ class Command(Job):
     def with_another_command(self, command, command_number=None):
         if not command:
             return self
-        
+
         if not self.extra.get("command"):
             return self.with_command(command)
- 
+
         command_number = command_number or self.__get_next_command_number()
         return self.with_(**{"command.{}".format(command_number): command})
-    
+
     def __get_next_command_number(self):
         counter = 1
         while self.extra.get("command.{}".format(counter)):
             counter += 1
         return counter
-    
+
     @classmethod
     def build(cls, data):
         extra_commands = [
@@ -152,4 +199,4 @@ class Command(Job):
             nodes=data.get('nodes'),
             extra=data.get('extra')
         ).with_command(data['config']['command']) \
-        .with_another_commands(extra_commands)
+            .with_another_commands(extra_commands)
