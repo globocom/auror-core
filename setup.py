@@ -20,7 +20,8 @@ setup(
         "autopep8==1.4.4",
     ],
     extras_require={
-        "test": ["mock","twine"]
+        "test": ["mock","twine"],
+        "docs": ["Sphinx"],
     },
     packages=find_packages(),
 )
