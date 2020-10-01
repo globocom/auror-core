@@ -3,7 +3,9 @@
 # Auror Core
 > Simple Flow creation for Azkaban
 
-![auror](https://pm1.narvii.com/6278/52c20397d131f309c687f0baa5125968cf79aea3_hq.jpg)
+![auror](https://images.unsplash.com/photo-1594399432263-78cfdbb29460?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=640&q=80)
+
+<span>Photo by <a href="https://unsplash.com/@rhii?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Rhii Photography</a> on <a href="https://unsplash.com/?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></span>
 
 ## Install
 
@@ -24,18 +26,26 @@ pip install auror_core
 
 ## Usage
 
-* [Creating a simple Azkaban flow with one command](#creating-a-simple-azkaban-flow-with-one-command)
-* [Creating a simple V2 Azkaban flow with one command](#Creating-a-simple-v2-azkaban-flow-with-one-command )
-* [Creating Flows with dependencies](#creating-flows-with-dependencies)
-* [Sharing job attributes](#sharing-job-attributes)
-* [Job with extra customization and configuration](#job-with-extra-customization-and-configuration)
-* [Integrating with Flow (just for V1)](#integrating-with-flow-(just-for-v1))
-* [Using Flow Params](#using-flow-params)
-* [Using Flow Environment Variables](#using-flow-environment-variables)
-* [Using Flow Environment Variables and Params](#using-flow-environment-variables-and-params)
-* [Join multiple variables in one](#join-multiple-variables-in-one)
-* [Load jobs from YAML File (just for V2)](#Load-jobs-from-yaml-file-(just-for-v2))
-* [Dump memory flows to a Python File (just for V2)](#dump-memory-flows-to-a-python-file-(just-for-v2))
+- [Auror Core](#auror-core)
+  - [Install](#install)
+  - [Supported Job Types](#supported-job-types)
+    - [V1](#v1)
+    - [V2](#v2)
+  - [Usage](#usage)
+    - [Creating a simple Azkaban flow with one command](#creating-a-simple-azkaban-flow-with-one-command)
+    - [Creating a simple V2 Azkaban flow with one command](#creating-a-simple-v2-azkaban-flow-with-one-command)
+    - [Creating Flows with dependencies](#creating-flows-with-dependencies)
+    - [Sharing job attributes](#sharing-job-attributes)
+    - [Job with extra customization and configuration](#job-with-extra-customization-and-configuration)
+    - [Integrating with Flow (just for V1)](#integrating-with-flow-just-for-v1)
+    - [Using Flow Params](#using-flow-params)
+    - [Using Flow Environment Variables](#using-flow-environment-variables)
+    - [Using Flow Environment Variables and Params](#using-flow-environment-variables-and-params)
+    - [Join multiple variables in one](#join-multiple-variables-in-one)
+    - [Load jobs from YAML File (just for V2)](#load-jobs-from-yaml-file-just-for-v2)
+    - [Dump memory flows to a Python File (just for V2)](#dump-memory-flows-to-a-python-file-just-for-v2)
+  - [Plugins](#plugins)
+  - [Contribute](#contribute)
 
 
 ### Creating a simple Azkaban flow with one command 
