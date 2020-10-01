@@ -5,6 +5,8 @@
 
 ![auror](https://images.unsplash.com/photo-1594399432263-78cfdbb29460?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=640&q=80)
 
+<span>Photo by <a href="https://unsplash.com/@rhii?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Rhii Photography</a> on <a href="https://unsplash.com/?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></span>
+
 - [Auror Core](#auror-core)
   - [Install](#install)
   - [Supported Job Types](#supported-job-types)
@@ -25,7 +27,6 @@
     - [Dump memory flows to a Python File (just for V2)](#dump-memory-flows-to-a-python-file-just-for-v2)
   - [Plugins](#plugins)
   - [Contribute](#contribute)
-  - [Image credits](#image-credits)
 
 ## Install
 
@@ -315,7 +316,3 @@ We already have email plugin: https://github.com/globocom/azkaban-jobtype-email
 ## Contribute
 
 For development and contributing, please follow [Contributing Guide](https://github.com/globocom/auror-core/blob/master/CONTRIBUTING.md) and ALWAYS respect the [Code of Conduct](https://github.com/globocom/auror-core/blob/master/CODE_OF_CONDUCT.md)
-
-## Image credits 
-
-<span>Photo by <a href="https://unsplash.com/@rhii?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Rhii Photography</a> on <a href="https://unsplash.com/?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></span>
