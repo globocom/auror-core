@@ -15,7 +15,10 @@ A simple library to create dynamically flows on Azkaban.
 
 .. image:: https://images.unsplash.com/photo-1594399432263-78cfdbb29460?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=640&q=80
 
-<span>Photo by <a href="https://unsplash.com/@rhii?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Rhii Photography</a> on <a href="https://unsplash.com/?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></span>
+Photo by `Rhii Photography`__ on `Unsplash`__
+
+.. __: https://unsplash.com/@rhii?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText
+.. __: https://unsplash.com/?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText
 
 Installation
 ------------
